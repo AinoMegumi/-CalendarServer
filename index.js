@@ -79,6 +79,7 @@ const main = async() => {
         };
         res.send(JSON.stringify(resJson));
     });
+    app.use(express.static('wwwroot'));
     app.use(express.json( { type:'application/*+json'}));
     app.listen(process.env.HTTP_PLATFORM_PORT || 8900);
 };
