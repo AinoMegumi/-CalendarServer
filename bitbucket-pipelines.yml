@@ -3,13 +3,24 @@ image: instrumentisto/rsync-ssh
 pipelines:
   default:
     - step:
+        name: Remove unnecessary files on server
         script:
           - mkdir -p /dev/shm/deploy/meigetsu-calendar
           - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
           - cd /dev/shm/deploy/meigetsu-calendar
-          - ls -la
           - rm bitbucket-pipelines.yml
           - rm .gitignore
           - rm -r .git
-          - ls -la
+    - step:
+        name: Upload to server
+        script:
           - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:/Website/meigetsu/Calendar
+    - step:
+        name: Download dependent packages
+        script:
+          - pipe: atlassian/ssh-run:0.2.8
+            variables:
+              SSH_USER: Kamioda
+              MODE: 'command'
+              SERVER: 'meigetsu.jp'
+              COMMAND: 'cd C:\Website\meigetsu\Calendar && npm install'
