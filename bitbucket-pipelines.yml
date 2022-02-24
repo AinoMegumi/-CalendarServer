@@ -4,7 +4,6 @@ pipelines:
   default:
     - step:
         script:
-          - dir
           - mkdir -p /dev/shm/deploy/meigetsu-calendar
           - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
           - cd /dev/shm/deploy/meigetsu-calendar
