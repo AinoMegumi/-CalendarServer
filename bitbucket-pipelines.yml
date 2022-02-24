@@ -3,7 +3,7 @@ image: instrumentisto/rsync-ssh
 pipelines:
   default:
     - step:
-      script:
+        script:
           - dir
           - mkdir -p /dev/shm/deploy/meigetsu-calendar
           - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
@@ -13,4 +13,4 @@ pipelines:
           - rm .gitignore
           - rm -r .git
           - ls -la
-          - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:\Website\meigetsu\Calendar
+          - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:/Website/meigetsu/Calendar
