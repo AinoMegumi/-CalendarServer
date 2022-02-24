@@ -3,7 +3,7 @@ image: instrumentisto/rsync-ssh
 pipelines:
   default:
     - step:
-        name: Remove unnecessary files on server
+        name: Upload to server
         script:
           - mkdir -p /dev/shm/deploy/meigetsu-calendar
           - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
@@ -11,9 +11,6 @@ pipelines:
           - rm bitbucket-pipelines.yml
           - rm .gitignore
           - rm -r .git
-    - step:
-        name: Upload to server
-        script:
           - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:/Website/meigetsu/Calendar
     - step:
         name: Download dependent packages
