@@ -1,0 +1,15 @@
+image: instrumentisto/rsync-ssh
+
+pipelines:
+  default:
+    - step:
+      script:
+          - mkdir -p /dev/shm/deploy/meigetsu-calendar
+          - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
+          - cd /dev/shm/deploy/meigetsu-calendar
+          - ls -la
+          - rm bitbucket-pipelines.yml
+          - rm .gitignore
+          - rm -r .git
+          - ls -la
+          - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:\Website\meigetsu\Calendar
