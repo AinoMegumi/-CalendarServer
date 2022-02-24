@@ -11,4 +11,4 @@ pipelines:
           - rm .gitignore
           - rm -r .git
           - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:/Website/meigetsu/Calendar
-          - ssh -p 26 Kamioda@meigetsu.jp cd C:/Website/meigetsu/Calendar;npm install
+          - ssh -p 26 Kamioda@meigetsu.jp 'cd C:/Website/meigetsu/Calendar;npm install'
