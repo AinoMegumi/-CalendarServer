@@ -21,4 +21,4 @@ pipelines:
               MODE: 'command'
               SERVER: 'meigetsu.jp'
               PORT: '26'
-              COMMAND: 'cd C:\\Website\\meigetsu\\Calendar && npm install'
+              COMMAND: 'cd C:\\Website\\meigetsu\\Calendar;npm install'
