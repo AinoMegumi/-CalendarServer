@@ -61,10 +61,9 @@ const main = async() => {
         }
         else {
             const dateVal = parseInt(req.query.date);
-            if (isNaN(dateVal)) return res.sendStatus(403);
-            if (!isValidDate(dateVal)) return res.sendStatus(400);
-            if (Borders[0].m_border.greater(dateVal)) return res.sendStatus(404);
-            res.send(createJapaneseCalendarResponseJson(dateVal))
+            if (isNaN(dateVal)) return res.sendStatus(400);
+            if (!isValidDate(dateVal) || dateVal < 19000101) return res.sendStatus(400);
+            res.send(createJapaneseCalendarResponseJson(dateVal));
         }
     });
     app.get('/anno_domini', (req, res) => {
