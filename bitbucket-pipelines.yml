@@ -3,7 +3,6 @@ image: instrumentisto/rsync-ssh
 pipelines:
   default:
     - step:
-        name: Upload to server
         script:
           - mkdir -p /dev/shm/deploy/meigetsu-calendar
           - rsync -au --delete . /dev/shm/deploy/meigetsu-calendar
@@ -12,13 +11,4 @@ pipelines:
           - rm .gitignore
           - rm -r .git
           - rsync -auz -e "ssh -p 26" --delete . Kamioda@meigetsu.jp:C:/Website/meigetsu/Calendar
-    - step:
-        name: Download dependent packages
-        script:
-          - pipe: atlassian/ssh-run:0.4.0
-            variables:
-              SSH_USER: Kamioda
-              MODE: 'command'
-              SERVER: 'meigetsu.jp'
-              PORT: '26'
-              COMMAND: 'cd C:\\Website\\meigetsu\\Calendar;npm install'
+          - ssh -p 26 Kamioda@meigetsu.jp cd C:/Website/meigetsu/Calendar;npm install
