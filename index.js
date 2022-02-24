@@ -50,7 +50,7 @@ const main = async() => {
     const createJapaneseCalendarResponseJson = (data) => 
         ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);    
 
-    app.get('/japanese', (req, res) => {
+    app.get('/api/japanese', (req, res) => {
         if (isNaN(req.query.date)) {
             var Cal = new Date();
             if (!isNaN(req.query.difference_from_today)) {
@@ -66,7 +66,7 @@ const main = async() => {
             res.send(createJapaneseCalendarResponseJson(dateVal));
         }
     });
-    app.get('/anno_domini', (req, res) => {
+    app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
         if (!isNaN(req.query.difference_from_today)) {
             v = parseInt(req.query.difference_from_today);
