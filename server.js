@@ -96,20 +96,19 @@ const main = async() => {
     };
 
     app.get('/api/japanese', (req, res) => {
-        if (!req.query.date) {
-            var Cal = new Date();
-            if (!isNaN(req.query.difference_from_today)) {
-                v = parseInt(req.query.difference_from_today);
-                if (!isNaN(v)) Cal.setDate(Cal.getDate() + v);
-            }
-            res.send(ccreateJapaneseCalendarResponseJson(Cal.getFullYear(), Cal.getMonth() + 1, Cal.getDate()));
-        }
-        else {
+        var Cal = new Date();
+        if (req.query.date) {
             const dateVal = parseInt(req.query.date);
             if (isNaN(dateVal)) return res.sendStatus(400);
             if (!isValidDate(dateVal) || dateVal < 19000101) return res.sendStatus(400);
-            res.send(createJapaneseCalendarResponseJson(dateVal));
+            Cal = new Date(Math.floor(dateVal / 10000), Math.floor((dateVal % 10000) / 100) - 1, dateVal % 100);
         }
+        if (req.query.difference_from_today) {
+            v = parseInt(req.query.difference_from_today);
+            if (isNaN(v)) return res.sendStatus(400);
+            Cal.setDate(Cal.getDate() + v);
+        }
+        res.send(ccreateJapaneseCalendarResponseJson(Cal.getFullYear(), Cal.getMonth() + 1, Cal.getDate()));
     });
     app.get('/api/japanese/eras', (_, res) => {
         var arr = new Array();
