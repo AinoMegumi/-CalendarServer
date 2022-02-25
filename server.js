@@ -74,16 +74,12 @@ const main = async() => {
     });
     app.get('/api/japanese/eras', (_, res) => {
         var arr = new Array();
-        for (var i = 0; i < Borders.length - 1; i++) {
-            const b = Borders[i];
-            const r = Borders[i + 1].m_border;
-            var c = new Date(r.year, r.month, r.day);
-            c.setDate(c.getDate() - 1);
+        Borders.forEach(b => {
             arr.push({
                 alphabet: b.m_alphabet,
                 kanji: b.m_jcalendar
             });
-        }
+        });
         res.send(JSON.stringify({ eras: arr }));
     });
     app.get('/api/japanese/max_year', (req, res) => {
