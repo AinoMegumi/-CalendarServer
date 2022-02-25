@@ -66,6 +66,41 @@ const main = async() => {
             res.send(createJapaneseCalendarResponseJson(dateVal));
         }
     });
+    app.get('/api/japanese/eras', (_, res) => {
+        var arr = new Array();
+        for (var i = 0; i < Borders.length - 1; i++) {
+            const b = Borders[i];
+            const r = Borders[i + 1].m_border;
+            var c = new Date(r.year, r.month, r.day);
+            c.setDate(c.getDate() - 1);
+            arr.push({
+                alphabet: b.m_alphabet,
+                kanji: b.m_jcalendar,
+                begin: {
+                    year: b.m_border.year,
+                    month: b.m_border.month,
+                    day: b.m_border.day
+                },
+                end: {
+                    year: c.getFullYear(),
+                    month: c.getMonth(),
+                    day: c.getDate()
+                }
+            });
+        }
+        const b = Borders[Borders.length - 1];
+        arr.push({
+            alphabet: b.m_alphabet,
+            kanji: b.m_jcalendar,
+            begin: {
+                year: b.m_border.year,
+                month: b.m_border.month,
+                day: b.m_border.day
+            }
+        });
+        res.send(JSON.stringify({ eras: arr }));
+    });
+
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
         if (!isNaN(req.query.difference_from_today)) {
