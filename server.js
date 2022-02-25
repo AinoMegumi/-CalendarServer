@@ -48,7 +48,13 @@ const main = async() => {
         createJapaneseCalendarResponseJsonImpl(cgetJapaneseCalendarData(AnnoDominiYear, MonthVal, DayVal), AnnoDominiYear, MonthVal, DayVal);
     
     const createJapaneseCalendarResponseJson = (data) => 
-        ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);    
+        ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
+
+    const getLastDate = (NextEraBorderInfo) => {
+        var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month, NextEraBorderInfo.day);
+        d.setDate(Cal.getDate() - 1);
+        return d;
+    };
 
     app.get('/api/japanese', (req, res) => {
         if (req.query.date != null) {
@@ -80,7 +86,21 @@ const main = async() => {
         }
         res.send(JSON.stringify({ eras: arr }));
     });
-
+    app.get('/api/japanese/max_year', (req, res) => {
+        if (req.query.era === null) return res.sendStatus(400);
+        for (var i = 0; i < Borders.length - 1; i++) {
+            if (req.query.era.toUpperCase() === Borders[i].m_alphabet || req.query.era === Borders[i].m_jcalendar) {
+                const StartYear = Borders[i].m_border.year;
+                const LastYear = getLastDate(Borders[i + 1].m_border).getFullYear();
+                return res.send(JSON.stringify({ max_year: (LastYear - StartYear + 1) }));
+            }
+        }
+        if (req.query.era.toUpperCase() === Borders[i].m_alphabet || req.query.era === Borders[i].m_jcalendar) {
+            const Today = new Date();
+            return res.send(JSON.stringify({ max_year: (Today.getFullYear() - Borders[i].m_border.year + 1) }));
+        }
+        return res.sendStatus(404);
+    });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
         if (req.query.difference_from_today != null) {
