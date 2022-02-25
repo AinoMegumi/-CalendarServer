@@ -75,29 +75,9 @@ const main = async() => {
             c.setDate(c.getDate() - 1);
             arr.push({
                 alphabet: b.m_alphabet,
-                kanji: b.m_jcalendar,
-                begin: {
-                    year: b.m_border.year,
-                    month: b.m_border.month,
-                    day: b.m_border.day
-                },
-                end: {
-                    year: c.getFullYear(),
-                    month: c.getMonth(),
-                    day: c.getDate()
-                }
+                kanji: b.m_jcalendar
             });
         }
-        const b = Borders[Borders.length - 1];
-        arr.push({
-            alphabet: b.m_alphabet,
-            kanji: b.m_jcalendar,
-            begin: {
-                year: b.m_border.year,
-                month: b.m_border.month,
-                day: b.m_border.day
-            }
-        });
         res.send(JSON.stringify({ eras: arr }));
     });
 
