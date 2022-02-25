@@ -51,7 +51,7 @@ const main = async() => {
         ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
 
     const getLastDate = (NextEraBorderInfo) => {
-        var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month, NextEraBorderInfo.day);
+        var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month - 1, NextEraBorderInfo.day);
         d.setDate(d.getDate() - 1);
         return d;
     };
@@ -67,7 +67,7 @@ const main = async() => {
                     },
                     end: {
                         year: LastDate.getFullYear(),
-                        month: LastDate.getMonth(),
+                        month: LastDate.getMonth() + 1,
                         day: LastDate.getDate()
                     }
                 };
