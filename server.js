@@ -123,12 +123,14 @@ const main = async() => {
         if (border === null) return res.sendStatus(404);
         return res.send(JSON.stringify({
             begin: {
-                year: 1,
+                japanese_year: 1,
+                anno_year: border.begin.year,
                 month: border.begin.month,
                 day: border.begin.day
             },
             end: {
-                year: border.end.year - border.begin.year + 1,
+                japanese_year: border.end.year - border.begin.year + 1,
+                anno_year: border.end.year,
                 month: border.end.month,
                 day: border.end.day
             }
