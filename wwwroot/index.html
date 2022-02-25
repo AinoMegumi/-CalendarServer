@@ -22,10 +22,11 @@
     </header>
     <div class="container">
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'anno_to_jp')" id="defaultOpen">西暦 -> 和暦</button>
+            <button class="tablinks" onclick="openTab(event, 'api_reference')" id="defaultOpen">変換ＡＰＩ</button>
+            <button class="tablinks" onclick="openTab(event, 'anno_to_jp')">西暦 -> 和暦</button>
             <button class="tablinks" onclick="openTab(event, 'jp_to_anno')">和暦 -> 西暦</button>
-            <button class="tablinks" onclick="openTab(event, 'api_reference')">変換ＡＰＩ</button>
         </div>
+        <div id="api_reference" class="tabcontent"></div>
         <div id="anno_to_jp" class="tabcontent">
             <section>
                 <p>西暦年月日</p>
@@ -78,7 +79,6 @@
                 </p>
             </section>
         </div>
-        <div id="api_reference" class="tabcontent"></div>
     </div>
 </body>
 </html>
