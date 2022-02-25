@@ -180,16 +180,33 @@ const main = async() => {
     });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
-        if (req.query.difference_from_today != null) {
-            v = parseInt(req.query.difference_from_today);
-            if (!isNaN(v)) Cal.setDate(Cal.getDate() + v);
+        if (req.query.japanese_date) {
+            var i = 0;
+
+            for (; i < req.query.japanese_date && !req.query.japanese_date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
+            const era = req.query.japanese_date(0, i);
+            const DateSection = req.query.japanese_date(i);
+            if (isNaN(DateSection) || DateSection.length < 5) return res.sendStatus(400);
+            const DateVal = parseInt(DateSection);
+            const border = getBorderDataFromEra(era);
+            if (border === null) return res.sendStatus(404);
+            const year = Math.floor(DateVal / 10000) + border.begin.year - 1;
+            const month = Math.floor((DateVal % 10000) / 100);
+            const day = DateVal % 100;
+            if (month < 1 || month > 12) return res.sendStatus(400);
+            const MonthLastDay = new Date(year, month, 0).getDate();
+            if (day < 1 || day > MonthLastDay) return res.sendStatus(400);
+            Cal = new Date(year, month - 1, day);
         }
-        const resJson = {
+        if (req.query.difference_from_today) {
+            if (isNaN(req.query.difference_from_today)) return res.sendStatus(400);
+            Cal.setDate(Cal.getDate() + parseInt(req.query.difference_from_today));
+        }
+        res.send(JSON.stringify({
             year: Cal.getFullYear(),
-            mon: (Cal.getMonth() + 1),
+            mon: Cal.getMonth() + 1,
             day: Cal.getDate()
-        };
-        res.send(JSON.stringify(resJson));
+        }));
     });
     app.use(express.static('wwwroot'));
     app.use(express.json( { type:'application/*+json'}));
