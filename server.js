@@ -92,7 +92,7 @@ const main = async() => {
     };
 
     app.get('/api/japanese', (req, res) => {
-        if (req.query.date != null) {
+        if (req.query.date === null) {
             var Cal = new Date();
             if (!isNaN(req.query.difference_from_today)) {
                 v = parseInt(req.query.difference_from_today);
