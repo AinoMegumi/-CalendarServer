@@ -117,6 +117,12 @@ const main = async() => {
         });
         res.send(JSON.stringify({ eras: arr }));
     });
+    app.get('/api/japanese/border', (req, res) => {
+        if (req.query.era === null) return res.sendStatus(400);
+        const border = getBorderDataFromEra(req.query.era);
+        if (border === null) return res.sendStatus(404);
+        return res.send(JSON.stringify(border));
+    });
     app.get('/api/japanese/max_year', (req, res) => {
         if (req.query.era === null) return res.sendStatus(400);
         for (var i = 0; i < Borders.length - 1; i++) {
@@ -145,6 +151,16 @@ const main = async() => {
             max: year === border.end.year ? border.end.month : 12
         }));
     });
+    app.get('/api/japanese/day', (req, res) => {
+        if (req.query.year === null || req.query.month) return res.sendStatus(400);
+        const era = req.query.year.substring(0, 1);
+        const yearBase = parseInt(req.query.year.substring(1));
+        const mon = parseInt(req.query.month);
+        if (isNaN(yearBase) || isNan(mon) || mon < 1 || mon > 12 || yearBase < 1) return res.sendStatus(400);
+        const border = getBorderDataFromEra(era);
+        const year = yearBase + border.begin.year - 1;
+        if (border === null || year > border.end.year) res.sendStatus(404);
+
     });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
