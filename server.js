@@ -138,9 +138,8 @@ const main = async() => {
         const yearBase = parseInt(req.query.year.substring(1));
         if (isNaN(yearBase) || yearBase < 1) return res.sendStatus(400);
         const border = getBorderDataFromEra(era);
-        if (border === null) return res.sendStatus(404);
         const year = yearBase + border.begin.year - 1;
-        if (year > border.end.year) res.sendStatus(404);
+        if (border === null || year > border.end.year) return res.sendStatus(404);
         return res.send(JSON.stringify({
             min: year === border.begin.year ? border.begin.month : 1,
             max: year === border.end.year ? border.end.month : 12
