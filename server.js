@@ -57,7 +57,11 @@ const main = async() => {
     };
     const getBorderDataFromEra = (era) => {
         for (var i = 0; i < Borders.length - 1; i++) {
-            if (era.toUpperCase() === Borders[i].m_alphabet || era === Borders[i].m_jcalendar) {
+            if (
+                era.toUpperCase() === Borders[i].m_alphabet 
+                || era === Borders[i].m_jcalendar
+                || era === Borders[i].m_jcalendar.substring(0, 1)
+                ) {
                 const LastDate = getLastDate(Borders[i + 1].m_border);
                 return {
                     begin: {
