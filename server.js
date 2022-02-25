@@ -51,7 +51,7 @@ const main = async() => {
         ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);    
 
     app.get('/api/japanese', (req, res) => {
-        if (isNaN(req.query.date)) {
+        if (req.query.date != null) {
             var Cal = new Date();
             if (!isNaN(req.query.difference_from_today)) {
                 v = parseInt(req.query.difference_from_today);
@@ -83,7 +83,7 @@ const main = async() => {
 
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
-        if (!isNaN(req.query.difference_from_today)) {
+        if (req.query.difference_from_today != null) {
             v = parseInt(req.query.difference_from_today);
             if (!isNaN(v)) Cal.setDate(Cal.getDate() + v);
         }
