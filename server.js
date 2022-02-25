@@ -92,7 +92,7 @@ const main = async() => {
     };
 
     app.get('/api/japanese', (req, res) => {
-        if (req.query.date === 0) {
+        if (req.query.date.length === 0) {
             var Cal = new Date();
             if (!isNaN(req.query.difference_from_today)) {
                 v = parseInt(req.query.difference_from_today);
@@ -118,7 +118,7 @@ const main = async() => {
         res.send(JSON.stringify({ eras: arr }));
     });
     app.get('/api/japanese/border', (req, res) => {
-        if (req.query.era === 0) return res.sendStatus(400);
+        if (req.query.era.length === 0) return res.sendStatus(400);
         const border = getBorderDataFromEra(req.query.era);
         if (border === null) return res.sendStatus(404);
         return res.send(JSON.stringify({
