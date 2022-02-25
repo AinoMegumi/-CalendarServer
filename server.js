@@ -52,7 +52,7 @@ const main = async() => {
 
     const getLastDate = (NextEraBorderInfo) => {
         var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month, NextEraBorderInfo.day);
-        d.setDate(Cal.getDate() - 1);
+        d.setDate(d.getDate() - 1);
         return d;
     };
 
