@@ -121,7 +121,18 @@ const main = async() => {
         if (req.query.era === null) return res.sendStatus(400);
         const border = getBorderDataFromEra(req.query.era);
         if (border === null) return res.sendStatus(404);
-        return res.send(JSON.stringify(border));
+        return res.send(JSON.stringify({
+            begin: {
+                year: 1,
+                month: border.begin.month,
+                day: border.begin.day
+            },
+            end: {
+                year: border.end.year - border.begin.year + 1,
+                month: border.end.month,
+                day: border.end.day
+            }
+        }));
     });
     app.get('/api/japanese/max_year', (req, res) => {
         if (req.query.era === null) return res.sendStatus(400);
