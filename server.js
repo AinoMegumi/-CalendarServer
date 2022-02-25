@@ -47,14 +47,12 @@ const main = async() => {
     const ccreateJapaneseCalendarResponseJson = (AnnoDominiYear, MonthVal, DayVal) => 
         createJapaneseCalendarResponseJsonImpl(cgetJapaneseCalendarData(AnnoDominiYear, MonthVal, DayVal), AnnoDominiYear, MonthVal, DayVal);
     
-    const createJapaneseCalendarResponseJson = (data) => 
-        ccreateJapaneseCalendarResponseJson(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
-
     const getLastDate = (NextEraBorderInfo) => {
         var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month - 1, NextEraBorderInfo.day);
         d.setDate(d.getDate() - 1);
         return d;
     };
+    
     const getBorderDataFromEra = (era) => {
         for (var i = 0; i < Borders.length - 1; i++) {
             if (
