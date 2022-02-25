@@ -136,18 +136,9 @@ const main = async() => {
     });
     app.get('/api/japanese/max_year', (req, res) => {
         if (req.query.era === null) return res.sendStatus(400);
-        for (var i = 0; i < Borders.length - 1; i++) {
-            if (req.query.era.toUpperCase() === Borders[i].m_alphabet || req.query.era === Borders[i].m_jcalendar) {
-                const StartYear = Borders[i].m_border.year;
-                const LastYear = getLastDate(Borders[i + 1].m_border).getFullYear();
-                return res.send(JSON.stringify({ max_year: (LastYear - StartYear + 1) }));
-            }
-        }
-        if (req.query.era.toUpperCase() === Borders[i].m_alphabet || req.query.era === Borders[i].m_jcalendar) {
-            const Today = new Date();
-            return res.send(JSON.stringify({ max_year: (Today.getFullYear() - Borders[i].m_border.year + 1) }));
-        }
-        return res.sendStatus(404);
+        const border = getBorderDataFromEra(req.query.era);
+        if (border === null) return res.sendStatus(404);
+        return res.send(JSON.stringify({ max_year: border.end.year - border.begin.year + 1 }));
     });
     app.get('/api/japanese/month', (req, res) => {
         if (req.query.year === null) return res.sendStatus(400);
