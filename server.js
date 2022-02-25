@@ -180,12 +180,11 @@ const main = async() => {
     });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
-        if (req.query.japanese_date) {
+        if (req.query.date) {
             var i = 0;
-
-            for (; i < req.query.japanese_date && !req.query.japanese_date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
-            const era = req.query.japanese_date(0, i);
-            const DateSection = req.query.japanese_date(i);
+            for (; i < req.query.date.length && !req.query.date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
+            const era = req.query.date.substring(0, i);
+            const DateSection = req.query.date.substring(i);
             if (isNaN(DateSection) || DateSection.length < 5) return res.sendStatus(400);
             const DateVal = parseInt(DateSection);
             const border = getBorderDataFromEra(era);
