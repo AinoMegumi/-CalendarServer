@@ -92,7 +92,7 @@ const main = async() => {
     };
 
     app.get('/api/japanese', (req, res) => {
-        if (req.query.date === null) {
+        if (req.query.date === 0) {
             var Cal = new Date();
             if (!isNaN(req.query.difference_from_today)) {
                 v = parseInt(req.query.difference_from_today);
@@ -118,7 +118,7 @@ const main = async() => {
         res.send(JSON.stringify({ eras: arr }));
     });
     app.get('/api/japanese/border', (req, res) => {
-        if (req.query.era === null) return res.sendStatus(400);
+        if (req.query.era === 0) return res.sendStatus(400);
         const border = getBorderDataFromEra(req.query.era);
         if (border === null) return res.sendStatus(404);
         return res.send(JSON.stringify({
@@ -137,13 +137,13 @@ const main = async() => {
         }));
     });
     app.get('/api/japanese/max_year', (req, res) => {
-        if (req.query.era === null) return res.sendStatus(400);
+        if (req.query.era.length === 0) return res.sendStatus(400);
         const border = getBorderDataFromEra(req.query.era);
         if (border === null) return res.sendStatus(404);
         return res.send(JSON.stringify({ max_year: border.end.year - border.begin.year + 1 }));
     });
     app.get('/api/japanese/month', (req, res) => {
-        if (req.query.year === null) return res.sendStatus(400);
+        if (req.query.year.length === 0) return res.sendStatus(400);
         const era = req.query.year.substring(0, 1);
         const yearBase = parseInt(req.query.year.substring(1));
         if (isNaN(yearBase) || yearBase < 1) return res.sendStatus(400);
@@ -156,7 +156,7 @@ const main = async() => {
         }));
     });
     app.get('/api/japanese/day', (req, res) => {
-        if (req.query.year === null || req.query.month === null) return res.sendStatus(400);
+        if (req.query.year.length === 0 || req.query.month.length === 0) return res.sendStatus(400);
         const era = req.query.year.substring(0, 1);
         const yearBase = parseInt(req.query.year.substring(1));
         const mon = parseInt(req.query.month);
