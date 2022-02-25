@@ -93,10 +93,18 @@ const main = async() => {
         return null;
     };
 
+    const SplitEraAndDateVal = (reqDate) => {
+        const date = reqDate.replaceAll('.', '');
+        var i = 0;
+        for (; i < date.length && !date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
+        const v = date.substring(i);
+        return isNaN(v) ? null : { era: date.substring(0, i), date: parseInt(v) };
+    };
+
     app.get('/api/japanese', (req, res) => {
         var Cal = new Date();
         if (req.query.date) {
-            const dateVal = parseInt(req.query.date);
+            const dateVal = parseInt(req.query.date.replaceAll('.', ''));
             if (isNaN(dateVal)) return res.sendStatus(400);
             if (!isValidDate(dateVal) || dateVal < 19000101) return res.sendStatus(400);
             Cal = new Date(Math.floor(dateVal / 10000), Math.floor((dateVal % 10000) / 100) - 1, dateVal % 100);
@@ -145,11 +153,11 @@ const main = async() => {
     });
     app.get('/api/japanese/month', (req, res) => {
         if (!req.query.year) return res.sendStatus(400);
-        const era = req.query.year.substring(0, 1);
-        const yearBase = parseInt(req.query.year.substring(1));
-        if (isNaN(yearBase) || yearBase < 1) return res.sendStatus(400);
-        const border = getBorderDataFromEra(era);
-        const year = yearBase + border.begin.year - 1;
+        const dateInfo = SplitEraAndDateVal(req.query.year);
+        if (dateInfo === null) return res.sendStatus(400);
+        if (dateInfo.date < 1) return res.sendStatus(400);
+        const border = getBorderDataFromEra(dateInfo.era);
+        const year = dateInfo.date + border.begin.year - 1;
         if (border === null || year > border.end.year) return res.sendStatus(404);
         return res.send(JSON.stringify({
             min: year === border.begin.year ? border.begin.month : 1,
@@ -158,12 +166,12 @@ const main = async() => {
     });
     app.get('/api/japanese/day', (req, res) => {
         if (!req.query.year || !req.query.month) return res.sendStatus(400);
-        const era = req.query.year.substring(0, 1);
-        const yearBase = parseInt(req.query.year.substring(1));
+        const yearInfo = SplitEraAndDateVal(req.query.year);
+        if (yearInfo === null) return res.sendStatus(400);
         const mon = parseInt(req.query.month);
-        if (isNaN(yearBase) || isNaN(mon) || mon < 1 || mon > 12 || yearBase < 1) return res.sendStatus(400);
-        const border = getBorderDataFromEra(era);
-        const year = yearBase + border.begin.year - 1;
+        if (isNaN(mon) || mon < 1 || mon > 12 || yearInfo.date < 1) return res.sendStatus(400);
+        const border = getBorderDataFromEra(yearInfo.era);
+        const year = yearInfo.date + border.begin.year - 1;
         const MonthLastDay = new Date(year, mon, 0).getDate();
         if (
             border === null 
@@ -179,17 +187,14 @@ const main = async() => {
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
         if (req.query.date) {
-            var i = 0;
-            for (; i < req.query.date.length && !req.query.date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
-            const era = req.query.date.substring(0, i);
-            const DateSection = req.query.date.substring(i);
-            if (isNaN(DateSection) || DateSection.length < 5) return res.sendStatus(400);
-            const DateVal = parseInt(DateSection);
-            const border = getBorderDataFromEra(era);
+            const date = SplitEraAndDateVal(req.query.date);
+            if (date === null) return res.sendStatus(400);
+            if (date.date < 10101) return res.sendStatus(400);
+            const border = getBorderDataFromEra(date.era);
             if (border === null) return res.sendStatus(404);
-            const year = Math.floor(DateVal / 10000) + border.begin.year - 1;
-            const month = Math.floor((DateVal % 10000) / 100);
-            const day = DateVal % 100;
+            const year = Math.floor(date.date / 10000) + border.begin.year - 1;
+            const month = Math.floor((date.date % 10000) / 100);
+            const day = date.date % 100;
             if (month < 1 || month > 12) return res.sendStatus(400);
             const MonthLastDay = new Date(year, month, 0).getDate();
             if (day < 1 || day > MonthLastDay) return res.sendStatus(400);
