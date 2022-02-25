@@ -154,15 +154,24 @@ const main = async() => {
         }));
     });
     app.get('/api/japanese/day', (req, res) => {
-        if (req.query.year === null || req.query.month) return res.sendStatus(400);
+        if (req.query.year === null || req.query.month === null) return res.sendStatus(400);
         const era = req.query.year.substring(0, 1);
         const yearBase = parseInt(req.query.year.substring(1));
         const mon = parseInt(req.query.month);
-        if (isNaN(yearBase) || isNan(mon) || mon < 1 || mon > 12 || yearBase < 1) return res.sendStatus(400);
+        if (isNaN(yearBase) || isNaN(mon) || mon < 1 || mon > 12 || yearBase < 1) return res.sendStatus(400);
         const border = getBorderDataFromEra(era);
         const year = yearBase + border.begin.year - 1;
-        if (border === null || year > border.end.year) res.sendStatus(404);
-
+        const MonthLastDay = new Date(year, mon, 0).getDate();
+        if (
+            border === null 
+            || year > border.end.year 
+            || (year === border.begin.year && mon < border.begin.month)
+            || (year === border.end.year && mon > border.end.month)
+            ) res.sendStatus(404);
+        return res.send(JSON.stringify({
+            min: (year === border.begin.year && mon === border.begin.month) ? border.begin.day : 1,
+            max: (year === border.end.year && mon === border.end.month) ? border.end.day : MonthLastDay
+        }));
     });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
