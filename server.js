@@ -97,6 +97,34 @@ const main = async() => {
         }
         return res.sendStatus(404);
     });
+    app.get('/api/japanese/month', (req, res) => {
+        if (req.query.year === null) return res.sendStatus(400);
+        const era = req.query.year.substring(0, 1);
+        const yearBase = parseInt(req.query.year.substring(1));
+        if (isNaN(yearBase) || yearBase < 1) return res.sendStatus(400);
+        for (var i = 0; i < Borders.length - 1; i++) {
+            if (era.toUpperCase() === Borders[i].m_alphabet || era === Borders[i].m_jcalendar) {
+                const StartYear = Borders[i].m_border.year;
+                const LastDate = getLastDate(Borders[i + 1].m_border);
+                const year = yearBase + StartYear - 1;
+                if (year > LastDate.getFullYear()) res.sendStatus(404);
+                return res.send(JSON.stringify({ 
+                    min: (year === StartYear ? Borders[i].m_border.month : 1), 
+                    max: (year === LastDate.getFullYear() ? LastDate.getMonth() : 12) 
+                }));
+            }
+        }
+        if (era.toUpperCase() === Borders[Borders.length - 1].m_alphabet || era === Borders[Borders.length - 1].m_jcalendar) {
+            const StartYear = Borders[Borders.length - 1].m_border.year;
+            const Today = new Date();
+            const year = yearBase + StartYear - 1;
+            return res.send(JSON.stringify({
+                min: (year === StartYear ? Borders[Borders.length - 1].m_border.month : 1), 
+                max: (year === Today.getFullYear() ? Today.getMonth() + 1 : 12) 
+            }));
+        }
+        return res.sendStatus(404);
+    });
     app.get('/api/anno_domini', (req, res) => {
         var Cal = new Date();
         if (req.query.difference_from_today != null) {
