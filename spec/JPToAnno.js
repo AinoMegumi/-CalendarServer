@@ -28,11 +28,11 @@ export function dateSplit(dateNum) {
             day: splitData[2],
         };
     } else if (splitData.length === 1) {
-        if (dateNum.length < 5 || dateNum.length > 8) return null;
+        if (dateNum.length < 5 || dateNum.length > 7) return null;
         return {
-            year: dateNum.substring(0, dateNum.length - 5),
-            month: dateNum.substring(dateNum.length - 5, dateNum.length - 3),
-            day: dateNum.substring(dateNum.length - 3),
+            year: dateNum.substring(0, dateNum.length - 4),
+            month: dateNum.substring(dateNum.length - 4, dateNum.length - 2),
+            day: dateNum.substring(dateNum.length - 2),
         };
     } else return null;
 }
