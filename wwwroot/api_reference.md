@@ -1,6 +1,6 @@
 # 変換ＡＰＩ一覧
 ## ルート
-https://calendar.meigetsu.jp/api
+https://calendar.net.meigetsu.jp/api
 
 ## /japanese
 
