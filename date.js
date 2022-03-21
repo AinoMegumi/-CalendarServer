@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 class DateCompareManager {
     constructor(arr) {
@@ -32,10 +32,11 @@ class DateCompareManager {
         return !this.cequal(YearVal, MonthVal, DayVal);
     }
     cless(YearVal, MonthVal, DayVal) {
-        return this.year < YearVal
-        || (this.year === YearVal && this.month < MonthVal)
-        || (this.year === YearVal && this.month === MonthVal && this.day < DayVal);
-
+        return (
+            this.year < YearVal ||
+            (this.year === YearVal && this.month < MonthVal) ||
+            (this.year === YearVal && this.month === MonthVal && this.day < DayVal)
+        );
     }
     cless_equal(YearVal, MonthVal, DayVal) {
         return this.cless(YearVal, MonthVal, DayVal) || this.cequal(YearVal, MonthVal, DayVal);

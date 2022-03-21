@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 const DateCompareManager = require('./date');
 
 class JapaneseCalendarBorderTable {
