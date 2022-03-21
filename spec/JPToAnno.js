@@ -42,7 +42,7 @@ export function dateSplit(dateNum) {
  * @param {{year: string, month: string, day: string}|null} dateMap 
  * @returns {{year: number, month: number, day: number}|null}
  */
-export function checkNaN(dateMap) {
+export function parseStringMapToNumMap(dateMap) {
     if (dateMap == null) return null;
     const ret = {};
     for (const [key, value] of Object.entries(dateMap)) {
