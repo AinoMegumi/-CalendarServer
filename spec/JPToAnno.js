@@ -37,10 +37,16 @@ export function dateSplit(dateNum) {
     } else return null;
 }
 
+/**
+ * 
+ * @param {{year: string, month: string, day: string}|null} dateMap 
+ * @returns {{year: number, month: number, day: number}|null}
+ */
 export function checkNaN(dateMap) {
     if (dateMap == null) return null;
     const ret = {};
     for (const [key, value] of Object.entries(dateMap)) {
+        if (!value.match(/^\d{1,}$/)) return null;
         ret[key] = parseInt(value);
         if (isNaN(ret[key])) return null;
     }
