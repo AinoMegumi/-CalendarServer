@@ -1,5 +1,5 @@
 'use strict';
-const DateCompareManager = require('./date');
+import DateCompareManager from './DateCompareManager';
 
 class JapaneseCalendarBorderTable {
     constructor(jcalendar, alphabet, borderArr) {
