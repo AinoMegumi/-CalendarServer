@@ -1,5 +1,4 @@
 'use strict';
-import dayjs from 'dayjs';
 
 class DateCompareManager {
     /**
