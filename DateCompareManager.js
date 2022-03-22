@@ -12,46 +12,57 @@ class DateCompareManager {
         this.month = Month;
         this.day = Day;
     }
-    equal(data) {
-        return this.cequal(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+    equal(dateCompMgr) {
+        return this.year === dateCompMgr.year && this.month === dateCompMgr.month && this.day === dateCompMgr.day;
     }
-    not_equal(data) {
-        return !this.equal(data);
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+    not_equal(dateCompMgr) {
+        return !this.cequal(dateCompMgr);
     }
-    less(data) {
-        return this.cless(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
-    }
-    less_equal(data) {
-        return this.less(data) || this.equal(data);
-    }
-    greater(data) {
-        return !this.less_equal(data);
-    }
-    greater_equal(data) {
-        return !this.less(data);
-    }
-
-    cequal(YearVal, MonthVal, DayVal) {
-        return this.year === YearVal && this.month === MonthVal && this.day === DayVal;
-    }
-    cnot_equal(YearVal, MonthVal, DayVal) {
-        return !this.cequal(YearVal, MonthVal, DayVal);
-    }
-    cless(YearVal, MonthVal, DayVal) {
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+     less(dateCompMgr) {
         return (
-            this.year < YearVal ||
-            (this.year === YearVal && this.month < MonthVal) ||
-            (this.year === YearVal && this.month === MonthVal && this.day < DayVal)
+            this.year < dateCompMgr.year ||
+            (this.year === dateCompMgr.year && this.month < dateCompMgr.month) ||
+            (this.year === dateCompMgr.year && this.month === dateCompMgr.month && this.day < dateCompMgr.day)
         );
     }
-    cless_equal(YearVal, MonthVal, DayVal) {
-        return this.cless(YearVal, MonthVal, DayVal) || this.cequal(YearVal, MonthVal, DayVal);
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+     less_equal(dateCompMgr) {
+        return this.cless(dateCompMgr) || this.cequal(dateCompMgr);
     }
-    cgreater(YearVal, MonthVal, DayVal) {
-        return !this.cless_equal(YearVal, MonthVal, DayVal);
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+     greater(dateCompMgr) {
+        return !this.cless_equal(dateCompMgr);
     }
-    cgreater_equal(YearVal, MonthVal, DayVal) {
-        return !this.cless(YearVal, MonthVal, DayVal);
+    /**
+     * 
+     * @param {DateCompareManager} dateCompMgr 
+     * @returns bool
+     */
+     greater_equal(dateCompMgr) {
+        return !this.cless(dateCompMgr);
     }
 }
 
