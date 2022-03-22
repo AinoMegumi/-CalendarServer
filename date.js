@@ -1,10 +1,17 @@
 'use strict';
+import dayjs from 'dayjs';
 
 class DateCompareManager {
-    constructor(arr) {
-        this.year = arr[0];
-        this.month = arr[1];
-        this.day = arr[2];
+    /**
+     * 
+     * @param {number} Year 
+     * @param {number} Month 
+     * @param {number} Day 
+     */
+    constructor(Year, Month, Day) {
+        this.year = Year;
+        this.month = Month;
+        this.day = Day;
     }
     equal(data) {
         return this.cequal(Math.floor(data / 10000), Math.floor((data % 10000) / 100), data % 100);
