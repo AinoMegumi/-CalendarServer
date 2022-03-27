@@ -1,6 +1,7 @@
 'use strict';
+import dayjs from 'dayjs';
 
-class DateCompareManager {
+export class DateCompareManager {
     /**
      * コンストラクター
      * @param {number} Year
@@ -66,5 +67,3 @@ class DateCompareManager {
         return !this.cless(dateCompMgr);
     }
 }
-
-module.exports = DateCompareManager;
