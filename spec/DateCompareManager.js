@@ -16,7 +16,13 @@ export class DateCompareManager {
 
     /**
      * 
-     * @param {DateCompareManager} dateCompMgr 
+     * @param {dayjs.Dayjs} dayjsDate 
+     * @returns {DateCompareManager}
+     */
+    static FromDayjs(dayjsDate) {
+        return new DateCompareManager(dayjsDate.year(), dayjsDate.month() + 1, dayjsDate.date());
+    }
+
      * @returns bool
      */
     equal(dateCompMgr) {
