@@ -26,21 +26,20 @@ function ToDateCompareManager(dateData) {
  * @returns {{ begin: { year: number, month: number, day: number }, end: { year: number, month: number, day: number } }|{ begin: { year: number, month: number, day: number } }|null}
  */
 export function GetBorderInfoFromEra(era) {
-    var i = 0;
-    for (; i < Borders.length; i++) {
-        const b = Borders[i];
-        if (b.alphabet === era || b.jcalendar === era || b.jcalendar.substring(0, 1) === era) break;
-    }
-    if (i === Borders.length) return null;
-    const beginInfo = Borders[i];
+    /** @type {number|null} */
+    let beginInfoIndex = null;
+    const beginInfo = Borders.find(
+        (b, i) => ((beginInfoIndex = i), b.alphabet === era || b.jcalendar === era || b.jcalendar.substring(0, 1) === era)
+    );
+    if (beginInfo == null || beginInfoIndex == null) return null;
     const beginJson = {
         year: beginInfo.border.year,
         month: beginInfo.border.month,
         day: beginInfo.border.day,
     };
-    if (i === Borders.length - 1) return { begin: beginJson };
+    if (beginInfoIndex === Borders.length - 1) return { begin: beginJson };
     else {
-        const endInfo = Borders[i + 1];
+        const endInfo = Borders[beginInfoIndex + 1];
         var EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
         EndDate.setDate(EndDate.getDate() - 1);
         return {
