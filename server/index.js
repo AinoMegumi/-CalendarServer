@@ -39,7 +39,7 @@ const main = async () => {
         });
 
     const cgetJapaneseCalendarData = (YearVal, MonthVal, DayVal) => {
-        var i = 0;
+        let i = 0;
         for (; i < Borders.length && Borders[i].m_border.cless_equal(YearVal, MonthVal, DayVal); i++);
         return Borders[--i];
     };
@@ -53,13 +53,14 @@ const main = async () => {
         );
 
     const getLastDate = NextEraBorderInfo => {
-        var d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month - 1, NextEraBorderInfo.day);
+        const d = new Date(NextEraBorderInfo.year, NextEraBorderInfo.month - 1, NextEraBorderInfo.day);
         d.setDate(d.getDate() - 1);
         return d;
     };
 
     const getBorderDataFromEra = era => {
-        for (var i = 0; i < Borders.length - 1; i++) {
+        let i = 0;
+        for (; i < Borders.length - 1; i++) {
             if (
                 era.toUpperCase() === Borders[i].m_alphabet ||
                 era === Borders[i].m_jcalendar ||
@@ -103,14 +104,14 @@ const main = async () => {
 
     const SplitEraAndDateVal = reqDate => {
         const date = reqDate.replaceAll('.', '');
-        var i = 0;
+        let i = 0;
         for (; i < date.length && !date.substring(i, i + 1).match(/[0-9,-]/); i++);
         const v = date.substring(i);
         return isNaN(v) ? null : { era: date.substring(0, i), date: parseInt(v) };
     };
 
     app.get('/api/japanese', (req, res) => {
-        var Cal = new Date();
+        let Cal = new Date();
         if (req.query.date) {
             const dateVal = parseInt(req.query.date.replaceAll('.', ''));
             if (isNaN(dateVal)) return res.sendStatus(400);
@@ -125,14 +126,7 @@ const main = async () => {
         res.send(ccreateJapaneseCalendarResponseJson(Cal.getFullYear(), Cal.getMonth() + 1, Cal.getDate()));
     });
     app.get('/api/japanese/eras', (_, res) => {
-        var arr = [];
-        Borders.forEach(b => {
-            arr.push({
-                alphabet: b.m_alphabet,
-                kanji: b.m_jcalendar,
-            });
-        });
-        res.send(JSON.stringify({ eras: arr }));
+        res.send(JSON.stringify({ eras: Borders.map(b => ({ alphabet: b.m_alphabet, kanji: b.m_jcalendar })) }));
     });
     app.get('/api/japanese/border', (req, res) => {
         if (!req.query.era) return res.sendStatus(400);
@@ -200,7 +194,7 @@ const main = async () => {
         );
     });
     app.get('/api/anno_domini', (req, res) => {
-        var Cal = new Date();
+        let Cal = new Date();
         if (req.query.date) {
             const date = SplitEraAndDateVal(req.query.date);
             if (date === null) return res.sendStatus(400);

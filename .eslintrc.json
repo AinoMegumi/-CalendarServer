@@ -17,6 +17,8 @@
         "default-case": "error",
         "array-callback-return": "error",
         "require-atomic-updates": "error",
+        "no-var": "error",
+        "prefer-const": "error",
         "node/no-missing-import": "off",
         "node/no-unpublished-import": "off"
     }

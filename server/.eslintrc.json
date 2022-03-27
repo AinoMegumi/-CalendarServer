@@ -19,6 +19,8 @@
         "require-atomic-updates": "error",
         "no-process-exit": "off",
         "no-process-env": "off",
+        "no-var": "error",
+        "prefer-const": "error",
         "node/no-missing-import": "off",
         "node/no-unpublished-import": "off"
     }

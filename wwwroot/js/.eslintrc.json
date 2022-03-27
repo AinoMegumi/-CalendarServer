@@ -17,6 +17,8 @@
         "no-constant-condition": ["error", { "checkLoops": false }],
         "no-alert": "error",
         "no-unused-vars": "off",
+        "no-var": "error",
+        "prefer-const": "error",
         "eqeqeq": ["error", "always", { "null": "ignore" }],
         "default-case": "error",
         "array-callback-return": "error",

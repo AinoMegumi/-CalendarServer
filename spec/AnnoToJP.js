@@ -29,7 +29,9 @@ export function GetBorderInfoFromEra(era) {
     /** @type {number|null} */
     let beginInfoIndex = null;
     const beginInfo = Borders.find(
-        (b, i) => ((beginInfoIndex = i), b.alphabet === era || b.jcalendar === era || b.jcalendar.substring(0, 1) === era)
+        (b, i) => (
+            (beginInfoIndex = i), b.alphabet === era || b.jcalendar === era || b.jcalendar.substring(0, 1) === era
+        )
     );
     if (beginInfo == null || beginInfoIndex == null) return null;
     const beginJson = {
@@ -40,7 +42,7 @@ export function GetBorderInfoFromEra(era) {
     if (beginInfoIndex === Borders.length - 1) return { begin: beginJson };
     else {
         const endInfo = Borders[beginInfoIndex + 1];
-        var EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
+        const EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
         EndDate.setDate(EndDate.getDate() - 1);
         return {
             begin: beginJson,
@@ -61,7 +63,7 @@ export function GetBorderInfoFromEra(era) {
 export function GetJapaneseCalendar(dateData) {
     const dayInfo = ToDateCompareManager(dateData);
     if (dayInfo == null) return null;
-    var i = 0;
+    let i = 0;
     for (; i < Borders.length && Borders[i].border.less_equal(dayInfo); i++);
     if (i === 0) return null;
     const data = Borders[--i];
