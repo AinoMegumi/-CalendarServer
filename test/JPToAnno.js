@@ -16,21 +16,21 @@ test('parseStringMapToNumMap', t => {
 });
 
 test('dateSplit_has_delimiter', t => {
-    t.deepEqual(dateSplit('26.12.10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('26-12-10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('26/12/10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('26.12-10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('26.12/10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('26/12-10'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('aa/bb/cc'), { year: 'aa', month: 'bb', day:'cc' });
+    t.deepEqual(dateSplit('26.12.10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('26-12-10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('26/12/10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('26.12-10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('26.12/10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('26/12-10'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('aa/bb/cc'), { year: 'aa', month: 'bb', day: 'cc' });
 });
 
 test('dateSplit_no_delimiter', t => {
-    t.deepEqual(dateSplit('261210'), { year: '26', month: '12', day:'10' });
-    t.deepEqual(dateSplit('aabbcc'), { year: 'aa', month: 'bb', day:'cc' });
+    t.deepEqual(dateSplit('261210'), { year: '26', month: '12', day: '10' });
+    t.deepEqual(dateSplit('aabbcc'), { year: 'aa', month: 'bb', day: 'cc' });
     t.is(dateSplit('1116'), null);
-    t.deepEqual(dateSplit('61210'), { year: '6', month: '12', day:'10' });
-    t.deepEqual(dateSplit('1261210'), { year: '126', month: '12', day:'10' });
+    t.deepEqual(dateSplit('61210'), { year: '6', month: '12', day: '10' });
+    t.deepEqual(dateSplit('1261210'), { year: '126', month: '12', day: '10' });
     t.is(dateSplit('12345678'), null);
 });
 

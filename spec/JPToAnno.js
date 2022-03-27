@@ -38,8 +38,8 @@ export function dateSplit(dateNum) {
 }
 
 /**
- * 
- * @param {{year: string, month: string, day: string}|null} dateMap 
+ *
+ * @param {{year: string, month: string, day: string}|null} dateMap
  * @returns {{year: number, month: number, day: number}|null}
  */
 export function parseStringMapToNumMap(dateMap) {
@@ -66,6 +66,6 @@ export function JPToAnno(jpCalendar) {
     return {
         year: parseInt(dateInfo.groups.year) + StartYear - 1,
         month: parseInt(dateInfo.groups.month),
-        day: parseInt(dateInfo.groups.day)
+        day: parseInt(dateInfo.groups.day),
     };
 }

@@ -1,14 +1,12 @@
 {
-    "extends": [ "eslint:recommended", "prettier"  ],
-    "plugins": [
-        "jquery"
-    ],
+    "extends": ["eslint:recommended", "prettier"],
+    "plugins": ["jquery"],
     "parserOptions": {
         "sourceType": "script",
         "ecmaVersion": 2020
     },
     "env": {
-        "node": false, 
+        "node": false,
         "es6": true,
         "browser": true,
         "jquery": true

@@ -2,11 +2,15 @@ import dayjs from 'dayjs';
 import { DateCompareManager } from './DateCompareManager.js';
 import { readFileSync } from 'fs';
 const calendarInfo = JSON.parse(readFileSync('./japanese_calendar.json'));
-const Borders = calendarInfo.borders.map(c => ({ jcalendar: c.jcalendar, alphabet: c.jalphabet, border: new DateCompareManager(...c.begin) }));
+const Borders = calendarInfo.borders.map(c => ({
+    jcalendar: c.jcalendar,
+    alphabet: c.jalphabet,
+    border: new DateCompareManager(...c.begin),
+}));
 
 /**
- * 
- * @param {string|number} dateData 
+ *
+ * @param {string|number} dateData
  * @returns {dayjs.Dayjs|null}
  */
 function ToDateCompareManager(dateData) {
@@ -18,7 +22,7 @@ function ToDateCompareManager(dateData) {
 
 /**
  * 指定された元号の表記、開始日、終了日を取得する
- * @param {string} era 
+ * @param {string} era
  * @returns {{ begin: { year: number, month: number, day: number }, end: { year: number, month: number, day: number } }|{ begin: { year: number, month: number, day: number } }|null}
  */
 export function GetBorderInfoFromEra(era) {
@@ -32,7 +36,7 @@ export function GetBorderInfoFromEra(era) {
     const beginJson = {
         year: beginInfo.border.year,
         month: beginInfo.border.month,
-        day: beginInfo.border.day
+        day: beginInfo.border.day,
     };
     if (i === Borders.length - 1) return { begin: beginJson };
     else {
@@ -44,15 +48,15 @@ export function GetBorderInfoFromEra(era) {
             end: {
                 year: EndDate.getFullYear(),
                 month: EndDate.getMonth() + 1,
-                day: EndDate.getDate()
-            }
-        }
+                day: EndDate.getDate(),
+            },
+        };
     }
 }
 
 /**
  * 指定された西暦の日付を和暦の日付に変換する
- * @param {string|number} dateData 
+ * @param {string|number} dateData
  * @returns { era: { long: string, short: string, alphabet: string }, border: { year: number, month: number, day: number }}
  */
 export function GetJapaneseCalendar(dateData) {
@@ -66,13 +70,13 @@ export function GetJapaneseCalendar(dateData) {
         era: {
             long: data.jcalendar,
             short: data.jcalendar.substring(0, 1),
-            alphabet: data.alphabet
+            alphabet: data.alphabet,
         },
         calendar: {
             year: dayInfo.year - data.border.year + 1,
             month: dayInfo.month,
-            day: dayInfo.day
-        }
+            day: dayInfo.day,
+        },
     };
 }
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import fse from 'fs/promises';
-import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js'
+import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js';
 const app = express();
 const Borders = [];
 

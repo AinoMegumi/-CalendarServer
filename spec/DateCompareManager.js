@@ -12,8 +12,8 @@ export class DateCompareManager {
     }
 
     /**
-     * 
-     * @param {dayjs.Dayjs} dayjsDate 
+     *
+     * @param {dayjs.Dayjs} dayjsDate
      * @returns {DateCompareManager}
      */
     static FromDayjs(dayjsDate) {
@@ -41,7 +41,7 @@ export class DateCompareManager {
      * @param {DateCompareManager} dateCompMgr
      * @returns bool
      */
-     less(dateCompMgr) {
+    less(dateCompMgr) {
         return (
             this.year < dateCompMgr.year ||
             (this.year === dateCompMgr.year && this.month < dateCompMgr.month) ||
@@ -53,7 +53,7 @@ export class DateCompareManager {
      * @param {DateCompareManager} dateCompMgr
      * @returns bool
      */
-     less_equal(dateCompMgr) {
+    less_equal(dateCompMgr) {
         return this.less(dateCompMgr) || this.equal(dateCompMgr);
     }
     /**
@@ -61,7 +61,7 @@ export class DateCompareManager {
      * @param {DateCompareManager} dateCompMgr
      * @returns bool
      */
-     greater(dateCompMgr) {
+    greater(dateCompMgr) {
         return !this.less_equal(dateCompMgr);
     }
     /**
@@ -69,7 +69,7 @@ export class DateCompareManager {
      * @param {DateCompareManager} dateCompMgr
      * @returns bool
      */
-     greater_equal(dateCompMgr) {
+    greater_equal(dateCompMgr) {
         return !this.less(dateCompMgr);
     }
 }
