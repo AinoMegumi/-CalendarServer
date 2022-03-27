@@ -2,7 +2,7 @@ import express from 'express';
 import fse from 'fs/promises';
 import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js'
 const app = express();
-const Borders = new Array();
+const Borders = [];
 
 const main = async () => {
     const calendar = JSON.parse(
