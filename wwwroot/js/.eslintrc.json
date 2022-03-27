@@ -1,7 +1,7 @@
 {
     "extends": [ "eslint:recommended", "plugin:node/recommended", "prettier"  ],
     "parserOptions": {
-        "sourceType": "module",
+        "sourceType": "script",
         "ecmaVersion": 2020
     },
     "env": {
