@@ -21,6 +21,24 @@ function ToDateCompareManager(dateData) {
 }
 
 /**
+ * @param {{year: number, month: number, day: number}} beginBorderInfo
+ * @param {{jcalendar: string, alphabet: string, border: DateCompareManager}} endInfo
+ * @returns 
+ */
+function CreatePastEraResponse(beginBorderInfo, endInfo) {
+    const EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
+    EndDate.setDate(EndDate.getDate() - 1);
+    return {
+        begin: beginBorderInfo,
+        end: {
+            year: EndDate.getFullYear(),
+            month: EndDate.getMonth() + 1,
+            day: EndDate.getDate(),
+        }
+    };
+}
+
+/**
  * 指定された元号の表記、開始日、終了日を取得する
  * @param {string} era
  * @returns {{ begin: { year: number, month: number, day: number }, end: { year: number, month: number, day: number } }|{ begin: { year: number, month: number, day: number } }|null}
@@ -34,24 +52,15 @@ export function GetBorderInfoFromEra(era) {
         )
     );
     if (beginInfo == null || beginInfoIndex == null) return null;
-    const beginJson = {
+    const beginBorderInfo = {
         year: beginInfo.border.year,
         month: beginInfo.border.month,
         day: beginInfo.border.day,
     };
-    if (beginInfoIndex === Borders.length - 1) return { begin: beginJson };
+    if (beginInfoIndex === Borders.length - 1) return { begin: beginBorderInfo };
     else {
         const endInfo = Borders[beginInfoIndex + 1];
-        const EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
-        EndDate.setDate(EndDate.getDate() - 1);
-        return {
-            begin: beginJson,
-            end: {
-                year: EndDate.getFullYear(),
-                month: EndDate.getMonth() + 1,
-                day: EndDate.getDate(),
-            },
-        };
+        return CreatePastEraResponse(beginBorderInfo, endInfo);
     }
 }
 
