@@ -59,10 +59,13 @@ export function parseStringMapToNumMap(dateMap) {
  * @returns {}
  */
 export function JPToAnno(jpCalendar) {
-    for (; i < date.length && !date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
-    const dateEraSection = date.substring(0, i);
-    const dateNumSection = date.substring(i);
-    if (isNaN(dateNumSection)) {
-    } else {
-    }
+    const dateInfo = jpCalendar.match(/(?<era>[^\d]+)(?<year>\d{1,3})[-/.]*(?<month>\d{2})[-/.]*(?<day>\d{2})/);
+    if (dateInfo == null || dateInfo.length != 5) return null;
+    const StartYear = GetStartYear(dateInfo.groups.era);
+    if (StartYear == null) return null;
+    return {
+        year: parseInt(dateInfo.groups.year) + StartYear - 1,
+        month: parseInt(dateInfo.groups.month),
+        day: parseInt(dateInfo.groups.day)
+    };
 }
