@@ -1,4 +1,3 @@
-'use strict';
 import dayjs from 'dayjs';
 
 export class DateCompareManager {
