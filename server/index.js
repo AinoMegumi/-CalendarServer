@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
+import fse from 'fs/promises';
+import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js'
 const app = express();
-const fse = require('fs/promises');
-const JapaneseCalendarBorder = require('./japanese_calendar_border_table');
 const Borders = new Array();
 
 const main = async () => {
