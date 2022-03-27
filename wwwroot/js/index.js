@@ -69,7 +69,7 @@ const AnnoToJP = () => {
     day.addEventListener('change', () => {
         result.style.display = 'none';
     });
-    convert.addEventListener('click', _ => {
+    convert.addEventListener('click', () => {
         const cal = parseInt(year.value) * 10000 + parseInt(month.value) * 100 + parseInt(day.value);
         fetch('./api/japanese?date=' + cal)
             .then(res => res.json())
@@ -176,7 +176,7 @@ const JPToAnno = () => {
             .catch(er => console.log(er));
     });
     dayList.addEventListener('change', () => (result.style.display = 'none'));
-    calcButton.addEventListener('click', _ => {
+    calcButton.addEventListener('click', () => {
         const dateNum = parseInt(yearList.value) * 10000 + parseInt(monthList.value) * 100 + parseInt(dayList.value);
         fetch('./api/anno_domini?date=' + eraList.value + dateNum)
             .then(res => res.json())
@@ -211,7 +211,7 @@ const SetupCopyButton = () => {
             showMethod: 'fadeIn',
             hideMethod: 'fadeOut',
         };
-        document.getElementById('copy_to_clipboard1').addEventListener('click', _ => {
+        document.getElementById('copy_to_clipboard1').addEventListener('click', () => {
             CopyToClipboard(
                 document.getElementById('result_jp_calendar1').value +
                     document.getElementById('result_jp_year1').value +
@@ -223,7 +223,7 @@ const SetupCopyButton = () => {
             );
             toastr['success']('クリップボードにコピーしました', '成功');
         });
-        document.getElementById('copy_to_clipboard2').addEventListener('click', _ => {
+        document.getElementById('copy_to_clipboard2').addEventListener('click', () => {
             CopyToClipboard(
                 document.getElementById('result_jp_calendar2').value +
                     document.getElementById('result_jp_year2').value +
@@ -234,7 +234,7 @@ const SetupCopyButton = () => {
             );
             toastr['success']('クリップボードにコピーしました', '成功');
         });
-        document.getElementById('copy_to_clipboard3').addEventListener('click', _ => {
+        document.getElementById('copy_to_clipboard3').addEventListener('click', () => {
             CopyToClipboard(
                 document.getElementById('result_anno_year1').value +
                     '年' +
@@ -245,7 +245,7 @@ const SetupCopyButton = () => {
             );
             toastr['success']('クリップボードにコピーしました', '成功');
         });
-        document.getElementById('copy_to_clipboard4').addEventListener('click', _ => {
+        document.getElementById('copy_to_clipboard4').addEventListener('click', () => {
             CopyToClipboard(
                 document.getElementById('result_anno_year2').value +
                     '.' +

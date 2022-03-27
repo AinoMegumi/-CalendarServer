@@ -40,7 +40,7 @@ const main = async () => {
 
     const cgetJapaneseCalendarData = (YearVal, MonthVal, DayVal) => {
         var i = 0;
-        for (; i < Borders.length && Borders[i].m_border.cless_equal(YearVal, MonthVal, DayVal); i++) {}
+        for (; i < Borders.length && Borders[i].m_border.cless_equal(YearVal, MonthVal, DayVal); i++);
         return Borders[--i];
     };
 
@@ -104,7 +104,7 @@ const main = async () => {
     const SplitEraAndDateVal = reqDate => {
         const date = reqDate.replaceAll('.', '');
         var i = 0;
-        for (; i < date.length && !date.substring(i, i + 1).match(/[0-9,-]/); i++) {}
+        for (; i < date.length && !date.substring(i, i + 1).match(/[0-9,-]/); i++);
         const v = date.substring(i);
         return isNaN(v) ? null : { era: date.substring(0, i), date: parseInt(v) };
     };
@@ -118,7 +118,7 @@ const main = async () => {
             Cal = new Date(Math.floor(dateVal / 10000), Math.floor((dateVal % 10000) / 100) - 1, dateVal % 100);
         }
         if (req.query.difference_from_today) {
-            v = parseInt(req.query.difference_from_today);
+            const v = parseInt(req.query.difference_from_today);
             if (isNaN(v)) return res.sendStatus(400);
             Cal.setDate(Cal.getDate() + v);
         }
