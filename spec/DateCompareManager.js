@@ -22,6 +22,9 @@ export class DateCompareManager {
         return new DateCompareManager(dayjsDate.year(), dayjsDate.month() + 1, dayjsDate.date());
     }
 
+    /**
+     * 指定された日付データと比較し、引数の値と一致する場合はtrueを返す
+     * @param {DateCompareManager} dateCompMgr
      * @returns bool
      */
     equal(dateCompMgr) {
