@@ -125,7 +125,7 @@ const main = async () => {
         res.send(ccreateJapaneseCalendarResponseJson(Cal.getFullYear(), Cal.getMonth() + 1, Cal.getDate()));
     });
     app.get('/api/japanese/eras', (_, res) => {
-        var arr = new Array();
+        var arr = [];
         Borders.forEach(b => {
             arr.push({
                 alphabet: b.m_alphabet,
