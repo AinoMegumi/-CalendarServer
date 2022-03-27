@@ -17,6 +17,8 @@
         "default-case": "error",
         "array-callback-return": "error",
         "require-atomic-updates": "error",
+        "no-process-exit": "off",
+        "no-process-env": "off",
         "node/no-missing-import": "off",
         "node/no-unpublished-import": "off"
     }
