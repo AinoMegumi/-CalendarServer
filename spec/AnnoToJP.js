@@ -1,23 +1,8 @@
 import dayjs from 'dayjs';
 import { DateCompareManager } from './DateCompareManager.js';
-import { JapaneseCalendarBorderTable } from './JapaneseCalendarBorderTable.js';
 import { readFileSync } from 'fs';
 const calendarInfo = JSON.parse(readFileSync('./japanese_calendar.json'));
-
-/**
- *
- * @returns Array
- */
-function GetBorderInformations() {
-    const b = new Array();
-    calendarInfo.borders.forEach(c => {
-        b.push(new JapaneseCalendarBorderTable(c.jcalendar, c.jalphabet, c.begin));
-    });
-    return b;
-}
-
-const Borders = GetBorderInformations();
-
+const Borders = calendarInfo.borders.map(c => ({ jcalendar: c.jcalendar, alphabet: c.jalphabet, border: new DateCompareManager(...c.begin) }));
 
 /**
  * 
@@ -40,22 +25,22 @@ export function GetBorderInfoFromEra(era) {
     var i = 0;
     for (; i < Borders.length; i++) {
         const b = Borders[i];
-        if (b.m_alphabet === era || b.m_jcalendar === era || b.m_jcalendar.substring(0, 1) === era) break;
+        if (b.alphabet === era || b.jcalendar === era || b.jcalendar.substring(0, 1) === era) break;
     }
     if (i === Borders.length) return null;
     const beginInfo = Borders[i];
     const beginJson = {
-        year: beginInfo.m_border.year,
-        month: beginInfo.m_border.month,
-        day: beginInfo.m_border.day
+        year: beginInfo.border.year,
+        month: beginInfo.border.month,
+        day: beginInfo.border.day
     };
     if (i === Borders.length - 1) {
-        if (beginInfo.m_alphabet !== era && beginInfo.m_jcalendar !== era && beginInfo.m_jcalendar.substring(0, 1) !== era) return null;
+        if (beginInfo.alphabet !== era && beginInfo.jcalendar !== era && beginInfo.jcalendar.substring(0, 1) !== era) return null;
         return { begin: beginJson }
     }
     else {
         const endInfo = Borders[i + 1];
-        var EndDate = new Date(endInfo.m_border.year, endInfo.m_border.month - 1, endInfo.m_border.day);
+        var EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
         EndDate.setDate(EndDate.getDate() - 1);
         return {
             begin: beginJson,
@@ -77,17 +62,17 @@ export function GetJapaneseCalendar(dateData) {
     const dayInfo = ToDateCompareManager(dateData);
     if (dayInfo == null) return null;
     var i = 0;
-    for (; i < Borders.length && Borders[i].m_border.less_equal(dayInfo); i++);
+    for (; i < Borders.length && Borders[i].border.less_equal(dayInfo); i++);
     if (i === 0) return null;
     const data = Borders[--i];
     return {
         era: {
-            long: data.m_jcalendar,
-            short: data.m_jcalendar.substring(0, 1),
-            alphabet: data.m_alphabet
+            long: data.jcalendar,
+            short: data.jcalendar.substring(0, 1),
+            alphabet: data.alphabet
         },
         calendar: {
-            year: dayInfo.year - data.m_border.year + 1,
+            year: dayInfo.year - data.border.year + 1,
             month: dayInfo.month,
             day: dayInfo.day
         }
