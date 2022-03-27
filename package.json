@@ -2,7 +2,7 @@
     "name": "japanesecalendar",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server/index.js",
     "type": "module",
     "engines": {
         "node": ">=14.19.0"
@@ -13,7 +13,7 @@
         "eslint:fix": "eslint --cache --ext .js . --fix",
         "ci": "run-p eslint test",
         "test": "ava --verbose test/",
-        "start": "node server.js"
+        "start": "node server/index.js"
     },
     "author": "Meigetsu Net",
     "license": "UNLICENSED",
