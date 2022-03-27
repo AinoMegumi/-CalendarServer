@@ -9,6 +9,8 @@
     },
     "scripts": {
         "prettier": "prettier --write .",
+        "eslint": "eslint --cache --ext .js .",
+        "eslint:fix": "eslint --cache --ext .js . --fix",
         "test": "ava --verbose test/",
         "start": "node server.js"
     },
