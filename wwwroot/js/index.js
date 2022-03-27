@@ -221,7 +221,7 @@ const SetupCopyButton = () => {
                     document.getElementById('result_jp_day1').value +
                     '日'
             );
-            Command: toastr['success']('クリップボードにコピーしました', '成功');
+            toastr['success']('クリップボードにコピーしました', '成功');
         });
         document.getElementById('copy_to_clipboard2').addEventListener('click', _ => {
             CopyToClipboard(
@@ -232,7 +232,7 @@ const SetupCopyButton = () => {
                     '.' +
                     document.getElementById('result_jp_day2').value
             );
-            Command: toastr['success']('クリップボードにコピーしました', '成功');
+            toastr['success']('クリップボードにコピーしました', '成功');
         });
         document.getElementById('copy_to_clipboard3').addEventListener('click', _ => {
             CopyToClipboard(
@@ -243,7 +243,7 @@ const SetupCopyButton = () => {
                     document.getElementById('result_anno_day1').value +
                     '日'
             );
-            Command: toastr['success']('クリップボードにコピーしました', '成功');
+            toastr['success']('クリップボードにコピーしました', '成功');
         });
         document.getElementById('copy_to_clipboard4').addEventListener('click', _ => {
             CopyToClipboard(
@@ -253,7 +253,7 @@ const SetupCopyButton = () => {
                     '.' +
                     document.getElementById('result_anno_day2').value
             );
-            Command: toastr['success']('クリップボードにコピーしました', '成功');
+            toastr['success']('クリップボードにコピーしました', '成功');
         });
     });
 };

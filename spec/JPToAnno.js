@@ -20,7 +20,7 @@ export function GetStartYear(era) {
  * @returns
  */
 export function dateSplit(dateNum) {
-    const splitData = dateNum.split(/[\/.-]/);
+    const splitData = dateNum.split(/[/.-]/);
     if (splitData.length === 3) {
         return {
             year: splitData[0],
@@ -60,7 +60,7 @@ export function parseStringMapToNumMap(dateMap) {
  */
 export function JPToAnno(jpCalendar) {
     const dateInfo = jpCalendar.match(/(?<era>[^\d]+)(?<year>\d{1,3})[-/.]*(?<month>\d{2})[-/.]*(?<day>\d{2})/);
-    if (dateInfo == null || dateInfo.length != 5) return null;
+    if (dateInfo == null || dateInfo.length !== 5) return null;
     const StartYear = GetStartYear(dateInfo.groups.era);
     if (StartYear == null) return null;
     return {

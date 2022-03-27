@@ -25,7 +25,7 @@ const Borders = GetBorderInformations();
  * @returns {dayjs.Dayjs|null}
  */
 function ToDateCompareManager(dateData) {
-    if (typeof dateData != 'number' && typeof dateData != 'string') return null;
+    if (typeof dateData !== 'number' && typeof dateData !== 'string') return null;
     if (typeof dateData === 'number' && !Number.isFinite(dateData)) return null;
     const ret = typeof dateData === 'number' ? dayjs(dateData.toString()) : dayjs(dateData);
     return ret.isValid() ? DateCompareManager.FromDayjs(ret) : null;
@@ -40,7 +40,7 @@ export function GetBorderInfoFromEra(era) {
     var i = 0;
     for (; i < Borders.length; i++) {
         const b = Borders[i];
-        if (b.m_alphabet == era || b.m_jcalendar == era || b.m_jcalendar.substring(0, 1) == era) break;
+        if (b.m_alphabet === era || b.m_jcalendar === era || b.m_jcalendar.substring(0, 1) === era) break;
     }
     if (i === Borders.length) return null;
     const beginInfo = Borders[i];
@@ -50,7 +50,7 @@ export function GetBorderInfoFromEra(era) {
         day: beginInfo.m_border.day
     };
     if (i === Borders.length - 1) {
-        if (beginInfo.m_alphabet != era && beginInfo.m_jcalendar != era && beginInfo.m_jcalendar.substring(0, 1) != era) return null;
+        if (beginInfo.m_alphabet !== era && beginInfo.m_jcalendar !== era && beginInfo.m_jcalendar.substring(0, 1) !== era) return null;
         return { begin: beginJson }
     }
     else {
@@ -77,7 +77,7 @@ export function GetJapaneseCalendar(dateData) {
     const dayInfo = ToDateCompareManager(dateData);
     if (dayInfo == null) return null;
     var i = 0;
-    for (; i < Borders.length && Borders[i].m_border.less_equal(dayInfo); i++) {}
+    for (; i < Borders.length && Borders[i].m_border.less_equal(dayInfo); i++);
     if (i === 0) return null;
     const data = Borders[--i];
     return {
