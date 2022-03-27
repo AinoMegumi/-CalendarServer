@@ -28,7 +28,7 @@ export class DateCompareManager {
      * @returns bool
      */
     not_equal(dateCompMgr) {
-        return !this.cequal(dateCompMgr);
+        return !this.equal(dateCompMgr);
     }
     /**
      * 指定された日付データと比較し、引数の値の方が大きい場合はtrueを返す
@@ -48,7 +48,7 @@ export class DateCompareManager {
      * @returns bool
      */
      less_equal(dateCompMgr) {
-        return this.cless(dateCompMgr) || this.cequal(dateCompMgr);
+        return this.less(dateCompMgr) || this.equal(dateCompMgr);
     }
     /**
      * 指定された日付データと比較し、引数の値の方が小さい場合はtrueを返す
@@ -56,7 +56,7 @@ export class DateCompareManager {
      * @returns bool
      */
      greater(dateCompMgr) {
-        return !this.cless_equal(dateCompMgr);
+        return !this.less_equal(dateCompMgr);
     }
     /**
      * 指定された日付データと比較し、引数の値の方が小さいまたは等しい場合はtrueを返す
@@ -64,6 +64,6 @@ export class DateCompareManager {
      * @returns bool
      */
      greater_equal(dateCompMgr) {
-        return !this.cless(dateCompMgr);
+        return !this.less(dateCompMgr);
     }
 }
