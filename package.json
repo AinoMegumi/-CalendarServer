@@ -4,6 +4,9 @@
     "description": "",
     "main": "index.js",
     "type": "module",
+    "engines": {
+        "node": ">=14.19.0"
+    },
     "scripts": {
         "prettier": "prettier --write .",
         "test": "ava --verbose test/",
