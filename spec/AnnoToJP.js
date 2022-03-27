@@ -72,10 +72,9 @@ export function GetBorderInfoFromEra(era) {
 export function GetJapaneseCalendar(dateData) {
     const dayInfo = ToDateCompareManager(dateData);
     if (dayInfo == null) return null;
-    let i = 0;
-    for (; i < Borders.length && Borders[i].border.less_equal(dayInfo); i++);
+    const i = Borders.findIndex(b => b.border.greater(dayInfo))
     if (i === 0) return null;
-    const data = Borders[--i];
+    const data = Borders[i - 1];
     return {
         era: {
             long: data.jcalendar,
