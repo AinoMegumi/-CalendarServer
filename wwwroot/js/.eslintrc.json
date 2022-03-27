@@ -1,0 +1,22 @@
+{
+    "extends": [ "eslint:recommended", "plugin:node/recommended", "prettier"  ],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 2020
+    },
+    "env": {
+        "node": false, 
+        "es6": true,
+        "browser": true
+    },
+    "rules": {
+        "no-await-in-loop": "error",
+        "no-useless-escape": "error",
+        "no-constant-condition": ["error", { "checkLoops": false }],
+        "no-alert": "error",
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "default-case": "error",
+        "array-callback-return": "error",
+        "require-atomic-updates": "error"
+    }
+}
