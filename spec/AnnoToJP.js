@@ -34,10 +34,7 @@ export function GetBorderInfoFromEra(era) {
         month: beginInfo.border.month,
         day: beginInfo.border.day
     };
-    if (i === Borders.length - 1) {
-        if (beginInfo.alphabet !== era && beginInfo.jcalendar !== era && beginInfo.jcalendar.substring(0, 1) !== era) return null;
-        return { begin: beginJson }
-    }
+    if (i === Borders.length - 1) return { begin: beginJson };
     else {
         const endInfo = Borders[i + 1];
         var EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
