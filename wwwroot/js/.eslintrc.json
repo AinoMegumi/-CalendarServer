@@ -1,5 +1,8 @@
 {
-    "extends": [ "eslint:recommended", "plugin:node/recommended", "prettier"  ],
+    "extends": [ "eslint:recommended", "prettier"  ],
+    "plugins": [
+        "jquery"
+    ],
     "parserOptions": {
         "sourceType": "script",
         "ecmaVersion": 2020
@@ -7,7 +10,8 @@
     "env": {
         "node": false, 
         "es6": true,
-        "browser": true
+        "browser": true,
+        "jquery": true
     },
     "rules": {
         "no-await-in-loop": "error",
@@ -19,5 +23,9 @@
         "default-case": "error",
         "array-callback-return": "error",
         "require-atomic-updates": "error"
+    },
+    "globals": {
+        "toastr": "readonly",
+        "marked": "readonly"
     }
 }
