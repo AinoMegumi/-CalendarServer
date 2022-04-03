@@ -15,7 +15,10 @@ test('GetJapaneseCalendar', t => {
         era: { long: '平成', short: '平', alphabet: 'H' },
         calendar: { year: 31, month: 4, day: 30 },
     });
-    t.is(GetJapaneseCalendar('20190430').era.alphabet, 'H');
+    t.deepEqual(GetJapaneseCalendar('20190430'), {
+        era: { long: '平成', short: '平', alphabet: 'H' },
+        calendar: { year: 31, month: 4, day: 30 },
+    });
     t.is(GetJapaneseCalendar('2019/04/30').era.alphabet, 'H');
     t.is(GetJapaneseCalendar(new Date(2019, 4, 30)), null); // Date型の扱いがちょっと厄介なので非サポート
 });
