@@ -2,6 +2,7 @@ import express from 'express';
 import fse from 'fs/promises';
 import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js';
 import { GetJapaneseCalendar, GetBorderInfoFromEra } from '../spec/AnnoToJP.js';
+import { JPToAnno } from '../spec/JPToAnno.js';
 const app = express();
 const Borders = [];
 
@@ -120,32 +121,8 @@ const main = async () => {
         res.sendStatus(GetBorderInfoFromEra(req.query.era));
     });
     app.get('/api/anno_domini', (req, res) => {
-        let Cal = new Date();
-        if (req.query.date) {
-            const date = SplitEraAndDateVal(req.query.date);
-            if (date === null) return res.sendStatus(400);
-            if (date.date < 10101) return res.sendStatus(400);
-            const border = getBorderDataFromEra(date.era);
-            if (border === null) return res.sendStatus(404);
-            const year = Math.floor(date.date / 10000) + border.begin.year - 1;
-            const month = Math.floor((date.date % 10000) / 100);
-            const day = date.date % 100;
-            if (month < 1 || month > 12) return res.sendStatus(400);
-            const MonthLastDay = new Date(year, month, 0).getDate();
-            if (day < 1 || day > MonthLastDay) return res.sendStatus(400);
-            Cal = new Date(year, month - 1, day);
-        }
-        if (req.query.difference_from_today) {
-            if (isNaN(req.query.difference_from_today)) return res.sendStatus(400);
-            Cal.setDate(Cal.getDate() + parseInt(req.query.difference_from_today));
-        }
-        res.send(
-            JSON.stringify({
-                year: Cal.getFullYear(),
-                mon: Cal.getMonth() + 1,
-                day: Cal.getDate(),
-            })
-        );
+        if (!req.query.date) return res.sendStatus(400);
+        res.send(JPToAnno(req.query.date));
     });
     app.use(express.static('wwwroot'));
     app.use(express.json({ type: 'application/*+json' }));
