@@ -76,7 +76,7 @@ export function GetJapaneseCalendar(dateData) {
     if (dayInfo == null) return null;
     const i = Borders.findIndex(b => b.border.greater(dayInfo));
     if (i === 0) return null; // 明治より前の年の場合、明治の１個前の元号という判定になってしまうので非対応として扱う
-    const data = Borders[(i === -1 ? Borders.length  : i) - 1]; // 最新元号の時、インデックスが-1になるので最後の要素を取得して返す
+    const data = Borders[(i === -1 ? Borders.length : i) - 1]; // 最新元号の時、インデックスが-1になるので最後の要素を取得して返す
     return {
         era: {
             long: data.jcalendar,
