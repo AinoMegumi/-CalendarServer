@@ -1,6 +1,7 @@
 import express from 'express';
 import fse from 'fs/promises';
 import JapaneseCalendarBorder from '../spec/JapaneseCalendarBorderTable.js';
+import { GetJapaneseCalendar } from '../spec/AnnoToJP.js';
 const app = express();
 const Borders = [];
 
@@ -110,21 +111,7 @@ const main = async () => {
         return isNaN(v) ? null : { era: date.substring(0, i), date: parseInt(v) };
     };
 
-    app.get('/api/japanese', (req, res) => {
-        let Cal = new Date();
-        if (req.query.date) {
-            const dateVal = parseInt(req.query.date.replaceAll('.', ''));
-            if (isNaN(dateVal)) return res.sendStatus(400);
-            if (!isValidDate(dateVal) || dateVal < 19000101) return res.sendStatus(400);
-            Cal = new Date(Math.floor(dateVal / 10000), Math.floor((dateVal % 10000) / 100) - 1, dateVal % 100);
-        }
-        if (req.query.difference_from_today) {
-            const v = parseInt(req.query.difference_from_today);
-            if (isNaN(v)) return res.sendStatus(400);
-            Cal.setDate(Cal.getDate() + v);
-        }
-        res.send(ccreateJapaneseCalendarResponseJson(Cal.getFullYear(), Cal.getMonth() + 1, Cal.getDate()));
-    });
+    app.get('/api/japanese', (req, res) => res.send(GetJapaneseCalendar(req.query.date)));
     app.get('/api/japanese/eras', (_, res) => {
         res.send(JSON.stringify({ eras: Borders.map(b => ({ alphabet: b.m_alphabet, kanji: b.m_jcalendar })) }));
     });
