@@ -24,7 +24,7 @@ function ToDateCompareManager(dateData) {
 /**
  * @param {{year: number, month: number, day: number}} beginBorderInfo
  * @param {{jcalendar: string, alphabet: string, border: DateCompareManager}} endInfo
- * @returns 
+ * @returns
  */
 function CreatePastEraResponse(beginBorderInfo, endInfo) {
     const EndDate = new Date(endInfo.border.year, endInfo.border.month - 1, endInfo.border.day);
@@ -35,7 +35,7 @@ function CreatePastEraResponse(beginBorderInfo, endInfo) {
             year: EndDate.getFullYear(),
             month: EndDate.getMonth() + 1,
             day: EndDate.getDate(),
-        }
+        },
     };
 }
 
@@ -74,7 +74,7 @@ export function GetBorderInfoFromEra(era) {
 export function GetJapaneseCalendar(dateData) {
     const dayInfo = ToDateCompareManager(dateData);
     if (dayInfo == null) return null;
-    const i = Borders.findIndex(b => b.border.greater(dayInfo))
+    const i = Borders.findIndex(b => b.border.greater(dayInfo));
     if (i === 0) return null;
     const data = Borders[i - 1];
     return {
