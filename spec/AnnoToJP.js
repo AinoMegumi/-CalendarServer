@@ -14,6 +14,7 @@ const Borders = calendarInfo.borders.map(c => ({
  * @returns {dayjs.Dayjs|null}
  */
 function ToDateCompareManager(dateData) {
+    if (dateData == null) return dayjs();
     if (typeof dateData !== 'number' && typeof dateData !== 'string') return null;
     if (typeof dateData === 'number' && !Number.isFinite(dateData)) return null;
     const ret = typeof dateData === 'number' ? dayjs(dateData.toString()) : dayjs(dateData);
@@ -66,7 +67,8 @@ export function GetBorderInfoFromEra(era) {
 
 /**
  * 指定された西暦の日付を和暦の日付に変換する
- * @param {string|number} dateData
+ * dateDataがnullの場合、今日の日付を変換する
+ * @param {string|number|null} dateData
  * @returns { era: { long: string, short: string, alphabet: string }, border: { year: number, month: number, day: number }}
  */
 export function GetJapaneseCalendar(dateData) {
