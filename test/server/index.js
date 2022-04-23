@@ -2,6 +2,20 @@ import test from 'ava';
 import { server } from '../../server/index.js';
 import request from 'supertest';
 
+test('Get supported eras', async t => {
+    const res = await request(server()).get('/api/japanese/eras').send();
+    t.is(res.status, 200);
+    t.deepEqual(res.body, {
+        eras: [
+            { alphabet: 'M', kanji: '明治' },
+            { alphabet: 'T', kanji: '大正' },
+            { alphabet: 'S', kanji: '昭和' },
+            { alphabet: 'H', kanji: '平成' },
+            { alphabet: 'R', kanji: '令和' },
+        ],
+    });
+});
+
 test('Get old borders', async t => {
     const res = await request(server()).get('/api/japanese/border').query({ era: '平成' }).send();
     t.is(res.status, 200);
@@ -18,18 +32,4 @@ test('Get anno domini calendar from Japanese calendar', async t => {
     const res = await request(server()).get('/api/anno_domini').query({ date: '令和4.04.10' }).send();
     t.is(res.status, 200);
     t.deepEqual(res.body, { year: 2022, month: 4, day: 10 });
-});
-
-test('Get supported eras', async t => {
-    const res = await request(server()).get('/api/japanese/eras').send();
-    t.is(res.status, 200);
-    t.deepEqual(res.body, {
-        eras: [
-            { alphabet: 'M', kanji: '明治' },
-            { alphabet: 'T', kanji: '大正' },
-            { alphabet: 'S', kanji: '昭和' },
-            { alphabet: 'H', kanji: '平成' },
-            { alphabet: 'R', kanji: '令和' },
-        ],
-    });
 });
