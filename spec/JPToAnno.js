@@ -56,7 +56,7 @@ export function parseStringMapToNumMap(dateMap) {
 /**
  * 和暦日付を西暦日付に変換する
  * @param {string} jpCalendar
- * @returns {}
+ * @returns { year: number, month: number, day: number }
  */
 export function JPToAnno(jpCalendar) {
     const dateInfo = jpCalendar.match(/(?<era>[^\d]+)(?<year>\d{1,3})[-/.]*(?<month>\d{2})[-/.]*(?<day>\d{2})/);
