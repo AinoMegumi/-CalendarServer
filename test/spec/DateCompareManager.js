@@ -1,5 +1,5 @@
 import test from 'ava';
-import { DateCompareManager } from '../spec/DateCompareManager.js';
+import { DateCompareManager } from '../../spec/DateCompareManager.js';
 const CompareTarget = new DateCompareManager(2019, 3, 6);
 
 test('DateCompareManager/equal', t => {

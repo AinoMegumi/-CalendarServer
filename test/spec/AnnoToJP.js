@@ -1,5 +1,5 @@
 import test from 'ava';
-import { GetBorderInfoFromEra, GetJapaneseCalendar, GetEra } from '../spec/AnnoToJP.js';
+import { GetBorderInfoFromEra, GetJapaneseCalendar, GetEra } from '../../spec/AnnoToJP.js';
 
 test('GetBorderInfoFromEra', t => {
     t.is(GetBorderInfoFromEra('元禄'), null);

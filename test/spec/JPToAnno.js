@@ -1,5 +1,5 @@
 import test from 'ava';
-import { GetStartYear, parseStringMapToNumMap, dateSplit, JPToAnno } from '../spec/JPToAnno.js';
+import { GetStartYear, parseStringMapToNumMap, dateSplit, JPToAnno } from '../../spec/JPToAnno.js';
 
 test('GetStartYear', t => {
     t.is(GetStartYear('平成'), 1989);
