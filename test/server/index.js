@@ -2,6 +2,15 @@ import test from 'ava';
 import { server } from '../../server/index.js';
 import request from 'supertest';
 
+test('Get Japenese calendar from anno domini calendar', async t => {
+    const res = await request(server()).get('/api/japanese').query({ date: '2021/06/01' }).send();
+    t.is(res.status, 200);
+    t.deepEqual(res.body, {
+        era: { long: '令和', short: '令', alphabet: 'R' },
+        calendar: { year: 3, month: 6, day: 1 }
+    });
+});
+
 test('Get supported eras', async t => {
     const res = await request(server()).get('/api/japanese/eras').send();
     t.is(res.status, 200);
