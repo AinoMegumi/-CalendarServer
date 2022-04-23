@@ -43,10 +43,9 @@ const JPToAnno = () => {
     fetch('./api/japanese/eras')
         .then(res => res.json())
         .then(r => {
-            r.eras.array.forEach(e => {
-                const item = m('option', { value: e.kanji }, { text: e.kanji });
-                m.mount(document.getElementById('jp_era'), item);
-            });
+            const era = document.getElementById('jp_era');
+            m.mount(era, { view: () => r.eras.map( e => m('option', { value: e.kanji }, e.kanji)) });
+            era.selectedIndex = era.options.length - 1;
         });
     document.getElementById('calc_anno').addEventListener('click', () => {
         const toTwoDigit = val => (parseInt(val) < 10 ? '0' : '') + val;
