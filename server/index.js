@@ -4,7 +4,7 @@ import { JPToAnno } from '../spec/JPToAnno.js';
 const app = express();
 const Borders = [];
 
-const main = async () => {
+export const server = () => {
     app.get('/api/japanese', (req, res) => {
         const resData = GetJapaneseCalendar(req.query.date);
         if (resData == null) return res.sendStatus(400);
@@ -27,10 +27,7 @@ const main = async () => {
     });
     app.use(express.static('wwwroot'));
     app.use(express.json({ type: 'application/*+json' }));
-    app.listen(process.env.HTTP_PLATFORM_PORT || 8900);
+    return app;
 };
 
-main().catch(er => {
-    console.error(er);
-    process.exit(1);
-});
+server().listen(process.env.HTTP_PLATFORM_PORT || 8900);
