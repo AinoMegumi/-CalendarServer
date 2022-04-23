@@ -9,6 +9,14 @@ const Borders = calendarInfo.borders.map(c => ({
 }));
 
 /**
+ * 元号を全て取得する
+ * @returns {{ eras: { alphabet: string, kanji: string }[]}}
+ */
+export function GetAllEras() {
+    return { eras: Borders.map(b => ({ alphabet: b.alphabet, kanji: b.jcalendar })) };
+}
+
+/**
  *
  * @param {string|number} dateData
  * @returns {dayjs.Dayjs|null}
