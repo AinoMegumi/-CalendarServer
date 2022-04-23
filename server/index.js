@@ -1,8 +1,7 @@
 import express from 'express';
-import { GetJapaneseCalendar, GetBorderInfoFromEra } from '../spec/AnnoToJP.js';
+import { GetJapaneseCalendar, GetBorderInfoFromEra, GetAllEras } from '../spec/AnnoToJP.js';
 import { JPToAnno } from '../spec/JPToAnno.js';
 const app = express();
-const Borders = [];
 
 export const server = () => {
     app.get('/api/japanese', (req, res) => {
@@ -11,7 +10,7 @@ export const server = () => {
         res.send(resData);
     });
     app.get('/api/japanese/eras', (_, res) => {
-        res.send({ eras: Borders.map(b => ({ alphabet: b.m_alphabet, kanji: b.m_jcalendar })) });
+        res.send(GetAllEras());
     });
     app.get('/api/japanese/border', (req, res) => {
         if (!req.query.era) return res.sendStatus(400);
