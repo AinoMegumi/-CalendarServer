@@ -20,3 +20,16 @@ test('Get anno domini calendar from Japanese calendar', async t => {
     t.deepEqual(res.body, { year: 2022, month: 4, day: 10 });
 });
 
+test('Get supported eras', async t => {
+    const res = await request(server()).get('/api/japanese/eras').send();
+    t.is(res.status, 200);
+    t.deepEqual(res.body, {
+        eras: [
+            { alphabet: 'M', kanji: '明治' },
+            { alphabet: 'T', kanji: '大正' },
+            { alphabet: 'S', kanji: '昭和' },
+            { alphabet: 'H', kanji: '平成' },
+            { alphabet: 'R', kanji: '令和' },
+        ],
+    });
+});
