@@ -7,7 +7,7 @@ test('Get Japenese calendar from anno domini calendar', async t => {
     t.is(res.status, 200);
     t.deepEqual(res.body, {
         era: { long: '令和', short: '令', alphabet: 'R' },
-        calendar: { year: 3, month: 6, day: 1 }
+        calendar: { year: 3, month: 6, day: 1 },
     });
 });
 
