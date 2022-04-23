@@ -9,7 +9,8 @@
         "node": false,
         "es6": true,
         "browser": true,
-        "jquery": true
+        "jquery": true,
+        "mithril": true
     },
     "rules": {
         "no-await-in-loop": "error",

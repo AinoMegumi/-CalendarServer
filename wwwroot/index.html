@@ -37,6 +37,12 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mithril/2.0.4/mithril.min.js"
+            integrity="sha512-MLAMNLcsKOnrROdkDj6Xe/lG7lztm0VYsq9Lqg76BAV7OJYqEYT23+s58GZrF5M/FXHDZ43uacvdJoAy8CfcUA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="./js/index.js"></script>
     </head>
@@ -63,12 +69,13 @@
                 <div id="anno_to_jp" class="tabcontent">
                     <section>
                         <p>西暦年月日</p>
-                        <input type="date" id="anno_date">
+                        <input type="date" id="anno_date" />
                         <input type="button" id="calc_jp" value="変換" />
                     </section>
                     <section id="result_jp" style="display: none">
                         <p>和暦年月日</p>
-                        <input type="text" id="result_jp_text" readonly></p>
+                        <input type="text" id="result_jp_text" readonly />
+                        <input type="button" id="copy_to_clipboard1" />
                     </section>
                 </div>
                 <div id="jp_to_anno" class="tabcontent">
@@ -76,15 +83,16 @@
                         <p>和暦年月日</p>
                         <p>
                             <select id="jp_era"></select>
-                            <input type="number" id="jp_year" pattern="[1-9][0-9]*$">年
-                            <input type="number" id="jp_month" pattern="[1-9][0-9]*$">月
-                            <input type="number" id="jp_day" pattern="[1-9][0-9]*$">日
+                            <input type="number" id="jp_year" pattern="[1-9][0-9]*$" />年
+                            <input type="number" id="jp_month" pattern="[1-9][0-9]*$" />月
+                            <input type="number" id="jp_day" pattern="[1-9][0-9]*$" />日
                             <input type="button" id="calc_anno" value="変換" />
                         </p>
                     </section>
                     <section id="result_anno" style="display: none">
                         <p>西暦年月日</p>
-                        <input type="text" id="result_anno_text" readonly></p>
+                        <input type="text" id="result_anno_text" readonly />
+                        <input type="button" id="copy_to_clipboard2" />
                     </section>
                 </div>
             </div>
