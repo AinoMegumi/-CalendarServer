@@ -98,12 +98,12 @@ const JPToAnno = () => {
             .then(r => {
                 ClearSelectList(monthList);
                 ClearSelectList(dayList);
-                if (createYearList) AddOptionInSectionFromSmallVal(yearList, r.end.japanese_year, 1);
-                if (r.begin.japanese_year < r.end.japanese_year) {
+                if (createYearList) AddOptionInSectionFromSmallVal(yearList, (r.end === undefined ? 10 : r.end.year) - r.begin.year + 1, 1);
+                if (r.begin.year < r.end.year) {
                     AddOptionInSectionFromSmallVal(monthList, 12, r.begin.month);
                     AddOptionInSectionFromSmallVal(
                         dayList,
-                        new Date(r.begin.anno_year, r.begin.month, 0).getDate(),
+                        new Date(r.begin.year, r.begin.month, 0).getDate(),
                         r.begin.day
                     );
                 } else {
@@ -111,7 +111,7 @@ const JPToAnno = () => {
                     if (r.begin.month < r.begin.month)
                         AddOptionInSectionFromSmallVal(
                             dayList,
-                            new Date(r.begin.anno_year, r.begin.month, 0).getDate(),
+                            new Date(r.begin.year, r.begin.month, 0).getDate(),
                             r.begin.day
                         );
                     else AddOptionInSectionFromSmallVal(dayList, r.end.day, r.begin.day);
@@ -132,10 +132,10 @@ const JPToAnno = () => {
         .catch(er => console.log(er));
     eraList.addEventListener('change', () => {
         result.style.display = 'none';
-        fetch('./api/japanese/max_year?era=' + eraList.value)
+        fetch('./api/japanese/border?era=' + eraList.value)
             .then(res => res.json())
             .then(r => {
-                const maxYear = parseInt(r.max_year);
+                const maxYear = parseInt(r.end.year);
                 while (maxYear < yearList.options.length) yearList.removeChild(yearList.lastChild);
                 AddOptionInSectionFromSmallVal(yearList, maxYear, parseInt(yearList.lastChild.value) + 1);
                 CreateMonthAndDayListFromBorderInfo(false);
@@ -144,28 +144,29 @@ const JPToAnno = () => {
     });
     yearList.addEventListener('change', () => {
         result.style.display = 'none';
-        fetch('./api/japanese/month?year=' + eraList.value + yearList.value)
+        fetch('./api/japanese/border?era=' + eraList.value)
             .then(res => res.json())
             .then(r => {
                 ClearSelectList(monthList);
-                AddOptionInSectionFromSmallVal(monthList, parseInt(r.max), parseInt(r.min));
-                fetch('./api/japanese/day?year=' + eraList.value + yearList.value + '&month=' + monthList.value)
-                    .then(res => res.json())
-                    .then(r => {
-                        ClearSelectList(dayList);
-                        AddOptionInSectionFromSmallVal(dayList, parseInt(r.max), parseInt(r.min));
-                    })
-                    .catch(er => console.log(er));
+                ClearSelectList(dayList);
+                dayList.value = '';
+                const minMonth = yearList.value === 1 ? r.begin.month : 1;
+                const maxMonth = (yearList.value === r.end.year - r.begin.year + 1) ? r.end.month : 12;
+                AddOptionInSectionFromSmallVal(monthList, maxMonth, minMonth);
             })
             .catch(er => console.log(er));
     });
     monthList.addEventListener('change', () => {
         result.style.display = 'none';
-        fetch('./api/japanese/day?year=' + eraList.value + yearList.value + '&month=' + monthList.value)
+        fetch('./api/japanese/border?era=' + eraList.value)
             .then(res => res.json())
             .then(r => {
                 ClearSelectList(dayList);
-                AddOptionInSectionFromSmallVal(dayList, parseInt(r.max), parseInt(r.min));
+                const minDay = (yearList.value === 1 && monthList.value === r.begin.month) ? r.begin.day : 1;
+                const lastDateOfMonth = new Date(yearList.value + r.begin.year - 1, monthList.value, 1);
+                lastDateOfMonth.setDate(lastDateOfMonth.getDate() - 1);
+                const maxDay = (yearList.value === r.end.year - r.begin.year + 1 && monthList.value === r.end.month) ? r.end.day : lastDateOfMonth.getDate();
+                AddOptionInSectionFromSmallVal(dayList, minDay, maxDay);
             })
             .catch(er => console.log(er));
     });
