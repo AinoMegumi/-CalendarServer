@@ -11,7 +11,7 @@ export const server = () => {
         res.send(resData);
     });
     app.get('/api/japanese/eras', (_, res) => {
-        res.send(JSON.stringify({ eras: Borders.map(b => ({ alphabet: b.m_alphabet, kanji: b.m_jcalendar })) }));
+        res.send({ eras: Borders.map(b => ({ alphabet: b.m_alphabet, kanji: b.m_jcalendar })) });
     });
     app.get('/api/japanese/border', (req, res) => {
         if (!req.query.era) return res.sendStatus(400);
