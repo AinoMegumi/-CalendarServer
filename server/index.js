@@ -17,7 +17,7 @@ export const server = () => {
         if (!req.query.era) return res.sendStatus(400);
         const resData = GetBorderInfoFromEra(req.query.era);
         if (resData == null) return res.sendStatus(404);
-        res.sendStatus(resData);
+        res.send(resData);
     });
     app.get('/api/anno_domini', (req, res) => {
         if (!req.query.date) return res.sendStatus(400);
