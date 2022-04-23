@@ -1,7 +1,9 @@
 import dayjs from 'dayjs';
 import { DateCompareManager } from './DateCompareManager.js';
 import { readFileSync } from 'fs';
+/** @type {{borders: { jcalendar: string, jalphabet: string, begin: [number, number, number] }[]}} */
 const calendarInfo = JSON.parse(readFileSync('./japanese_calendar.json'));
+/** @type { {jcalendar: string, alphabet: string, border: DateCompareManager }[] } */
 const Borders = calendarInfo.borders.map(c => ({
     jcalendar: c.jcalendar,
     alphabet: c.jalphabet,
