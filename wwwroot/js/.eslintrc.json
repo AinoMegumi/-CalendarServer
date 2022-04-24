@@ -9,8 +9,7 @@
         "node": false,
         "es6": true,
         "browser": true,
-        "jquery": true,
-        "mithril": true
+        "jquery": true
     },
     "rules": {
         "no-await-in-loop": "error",
@@ -27,6 +26,7 @@
     },
     "globals": {
         "toastr": "readonly",
-        "marked": "readonly"
+        "marked": "readonly",
+        "m": "readonly"
     }
 }
