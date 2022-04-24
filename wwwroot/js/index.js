@@ -31,11 +31,12 @@ const AnnoToJP = () => {
         const queryParam = new URLSearchParams(param);
         fetch('./api/japanese?' + queryParam)
             .then(res => res.json())
-            .then(
-                r =>
-                    (document.getElementById('result_jp_text').value =
-                        r.era.long + r.calendar.year + '年' + r.calendar.month + '月' + r.calendar.day + '日')
-            );
+            .then(r => {
+                document.getElementById('result_jp_text').value =
+                    r.era.long + r.calendar.year + '年' + r.calendar.month + '月' + r.calendar.day + '日';
+                document.getElementById('result_jp').style.display = 'block';
+            })
+            .catch(e => console.log(e));
     });
 };
 
@@ -44,9 +45,10 @@ const JPToAnno = () => {
         .then(res => res.json())
         .then(r => {
             const era = document.getElementById('jp_era');
-            m.mount(era, { view: () => r.eras.map( e => m('option', { value: e.kanji }, e.kanji)) });
+            m.mount(era, { view: () => r.eras.map(e => m('option', { value: e.kanji }, e.kanji)) });
             era.selectedIndex = era.options.length - 1;
-        });
+        })
+        .catch(e => console.log(e));
     document.getElementById('calc_anno').addEventListener('click', () => {
         const toTwoDigit = val => (parseInt(val) < 10 ? '0' : '') + val;
         const param = {
@@ -61,9 +63,11 @@ const JPToAnno = () => {
         const queryParam = new URLSearchParams(param);
         fetch('/api/anno_domini' + queryParam)
             .then(res => res.json())
-            .then(
-                r => (document.getElementById('result_jp_text').value = r.year + '年' + r.month + '月' + r.day + '日')
-            );
+            .then(r => {
+                document.getElementById('result_anno_text').value = r.year + '年' + r.month + '月' + r.day + '日';
+                document.getElementById('result_anno').style.display = 'block';
+            })
+            .catch(e => console.log(e));
     });
 };
 
