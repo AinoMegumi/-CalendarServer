@@ -20,6 +20,24 @@ const CopyToClipboard = data => {
     toastr['success']('クリップボードにコピーしました', '成功');
 };
 
+const CreateMenu = (ActiveRoute) => {
+    const Menu = {
+        menubutton: (route, text) => {
+            return route === ActiveRoute
+                ? m('button.tablinks active', text)
+                : m('button.tablinks', { onclick: () => (Menu.current = location.href = '/#!' + route) }, text);
+        },
+        view: () => {
+            return m('div.tab', [
+                Menu.menubutton('/convert_to_jp', '西暦 -> 和暦'),
+                Menu.menubutton('/convert_to_anno', '和暦 -> 西暦'),
+                Menu.menubutton('/api_reference', '変換ＡＰＩ'),
+            ]);
+        },
+    };
+    return Menu;
+}
+
 const Era = {
     eras: [],
     oninit: () => {
@@ -51,6 +69,7 @@ const ConvertAnnoToJP = {
     },
     view: () => {
         return m('section', [
+            m(CreateMenu('/convert_to_jp')),
             m('h3', '西暦から和暦に変換する'),
             m('div', [
                 m('p', '西暦年月日'),
@@ -96,6 +115,7 @@ const ConvertJPToAnno = {
     },
     view: () => {
         const ret = m('section', [
+            m(CreateMenu('/convert_to_anno')),
             m('h3', '和暦から西暦に変換する'),
             m('div', [
                 m('p', '和暦年月日'),
@@ -152,16 +172,6 @@ const ConvertJPToAnno = {
     },
 };
 
-const Convert = {
-    display: true,
-    view: () => {
-        return m('div', [
-            m('div.tab', [m('a', '日付の変換'), m(m.route.Link, { href: '/api_refrence' }, '変換ＡＰＩ')]),
-            m('div', { display: Convert.display }, [m(ConvertAnnoToJP), m(ConvertJPToAnno)]),
-        ]);
-    },
-};
-
 const ApiReference = {
     convertedMarkdown: '',
     oninit: () => {
@@ -176,30 +186,12 @@ const ApiReference = {
     },
     view: () => {
         console.log('ApiReferece#view');
-        return m('div.tabcontent', m.trust(ApiReference.convertedMarkdown));
+        return m('div.tabcontent', [m(CreateMenu('/api_reference')), m.trust(ApiReference.convertedMarkdown)]);
     },
 };
-
-const Menu = {
-    current: location.href.substring(location.href.indexOf('!') + 1),
-    menubutton: (route, text) => {
-        return route === Menu.current
-            ? m('button.tablinks', text)
-            : m('button.tablinks', { onclick: () => (Menu.current = location.href = '/#!' + route) }, text);
-    },
-    view: () => {
-        return m('div.tab', [
-            Menu.menubutton('/convert_to_jp', '西暦 -> 和暦'),
-            Menu.menubutton('/convert_to_anno', '和暦 -> 西暦'),
-            Menu.menubutton('/api_refrence', '変換ＡＰＩ'),
-        ]);
-    },
-};
-
-m.mount(document.getElementById('menu'), Menu);
 
 m.route(document.getElementById('content'), '/convert_to_jp', {
     '/convert_to_jp': ConvertAnnoToJP,
     '/convert_to_anno': ConvertJPToAnno,
-    '/api_refrence': ApiReference,
+    '/api_reference': ApiReference,
 });
