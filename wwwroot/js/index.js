@@ -1,114 +1,205 @@
-const ready = loaded => {
-    if (['interactive', 'complete'].includes(document.readyState)) {
-        loaded();
-    } else {
-        document.addEventListener('DOMContentLoaded', loaded);
-    }
+toastr.options = {
+    timeOut: 3000, // 3秒
+    closeButton: true,
+    debug: false,
+    newestOnTop: false,
+    progressBar: false,
+    positionClass: 'toast-bottom-right',
+    preventDuplicates: false,
+    showDuration: '300',
+    hideDuration: '1000',
+    extendedTimeOut: '1000',
+    showEasing: 'swing',
+    hideEasing: 'linear',
+    showMethod: 'fadeIn',
+    hideMethod: 'fadeOut',
 };
 
 const CopyToClipboard = data => {
     navigator.clipboard.writeText(data);
+    toastr['success']('クリップボードにコピーしました', '成功');
 };
 
-const openTab = (evt, id) => {
-    const tabcontent = document.getElementsByClassName('tabcontent');
-    for (const i of tabcontent) i.style.display = 'none';
-    const tablinks = document.getElementsByClassName('tablinks');
-    for (const i of tablinks) i.className = i.className.replace(' active', '');
-    document.getElementById(id).style.display = 'block';
-    evt.currentTarget.className += ' active';
+const Era = {
+    eras: [],
+    oninit: () => {
+        console.log('init start');
+        return (
+            m
+                .request({ method: 'GET', url: './api/japanese/eras' })
+                // return fetch('./api/japanese/eras')
+                // .then(res => res.json())
+                .then(r => {
+                    Era.eras = r.eras.map(e => e.kanji).reverse();
+                    console.log('requested', Era.eras);
+                    m.redraw();
+                })
+                .catch(e => console.log(e))
+        );
+    },
+    view: () => Era.eras.map(era => m('option', { value: era }, era)),
 };
 
-const AnnoToJP = () => {
-    document.getElementById('calc_jp').addEventListener('click', () => {
-        const param = { date: document.getElementById('anno_date').value };
+const ConvertAnnoToJP = {
+    date_: '',
+    result_: '',
+    convert: async date => {
+        const param = { date: date };
         const queryParam = new URLSearchParams(param);
-        fetch('./api/japanese?' + queryParam)
-            .then(res => res.json())
-            .then(r => {
-                document.getElementById('result_jp_text').value =
-                    r.era.long + r.calendar.year + '年' + r.calendar.month + '月' + r.calendar.day + '日';
-                document.getElementById('result_jp').style.display = 'block';
-            })
-            .catch(e => console.log(e));
-    });
+        const r = await fetch('./api/japanese?' + queryParam).then(res => res.json());
+        return r.era.long + r.calendar.year + '年' + r.calendar.month + '月' + r.calendar.day + '日';
+    },
+    view: () => {
+        return m('section', [
+            m('h3', '西暦から和暦に変換する'),
+            m('div', [
+                m('p', '西暦年月日'),
+                m('input[type=date]', {
+                    oninput: e => {
+                        ConvertAnnoToJP.date_ = e.target.value;
+                    },
+                    value: ConvertAnnoToJP.date_,
+                }),
+                m('input[type=button]', {
+                    id: 'calc_jp',
+                    value: '変換',
+                    onclick: () => {
+                        ConvertAnnoToJP.convert(ConvertAnnoToJP.date_)
+                            .then(t => {
+                                ConvertAnnoToJP.result_ = t;
+                            })
+                            .catch(e => console.log(e));
+                    },
+                }),
+            ]),
+            m('div', { id: 'result_jp', style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
+                m('p', '和暦年月日'),
+                m('input[type=text][readonly]', ConvertAnnoToJP.result_),
+                m('input[type=button]', { value: 'コピー', onclick: () => CopyToClipboard(ConvertAnnoToJP.result_) }),
+            ]),
+        ]);
+    },
 };
 
-const JPToAnno = () => {
-    fetch('./api/japanese/eras')
-        .then(res => res.json())
-        .then(r => {
-            const era = document.getElementById('jp_era');
-            m.mount(era, { view: () => r.eras.map(e => m('option', { value: e.kanji }, e.kanji)) });
-            era.selectedIndex = era.options.length - 1;
-        })
-        .catch(e => console.log(e));
-    document.getElementById('calc_anno').addEventListener('click', () => {
-        const toTwoDigit = val => (parseInt(val) < 10 ? '0' : '') + val;
-        const param = {
-            date:
-                document.getElementById('jp_era').value +
-                document.getElementById('jp_year') +
-                '.' +
-                toTwoDigit(document.getElementById('jp_month').value) +
-                '.' +
-                toTwoDigit(document.getElementById('jp_day').value),
-        };
+const ConvertJPToAnno = {
+    selectedEra_: '',
+    inputedYear_: '',
+    inputedMonth_: '',
+    inputedDay_: '',
+    result_: '',
+    toTwoDigit_: val => (parseInt(val) < 10 ? '0' : '') + val,
+    convert: async (era, year, month, day) => {
+        const param = { date: era + year + '.' + month + '.' + day };
         const queryParam = new URLSearchParams(param);
-        fetch('/api/anno_domini' + queryParam)
-            .then(res => res.json())
+        const r = await fetch('/api/anno_domini' + queryParam).then(res => res.json());
+        return r.year + '年' + r.month + '月' + r.day + '日';
+    },
+    view: () => {
+        const ret = m('section', [
+            m('h3', '和暦から西暦に変換する'),
+            m('div', [
+                m('p', '和暦年月日'),
+                m('p', [
+                    m(
+                        'select',
+                        {
+                            oncange: e => (ConvertJPToAnno.selectedEra_ = e.target.value),
+                            value: ConvertJPToAnno.selectedEra_,
+                        },
+                        m(Era)
+                    ),
+                    m("input[type='number'][min='1'][max='64'][pattern='[1-9][0-9]*$']", {
+                        oninput: e => (ConvertJPToAnno.inputedYear_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                        value: ConvertJPToAnno.inputedYear_,
+                    }),
+                    '年',
+                    m("input[type='number'][min='1'][max='12'][pattern='[1-9][0-9]*$']", {
+                        oninput: e => (ConvertJPToAnno.inputedMonth_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                        value: ConvertJPToAnno.inputedMonth_,
+                    }),
+                    '月',
+                    m("input[type='number'][min='1'][max='31'][pattern='[1-9][0-9]*$']", {
+                        oninput: e => (ConvertJPToAnno.inputedDay_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                        value: ConvertJPToAnno.inputedDay_,
+                    }),
+                    '日',
+                    m('input[type=button]', {
+                        value: '変換',
+                        onclick: () => {
+                            ConvertJPToAnno.convert(
+                                ConvertJPToAnno.selectedEra_,
+                                ConvertJPToAnno.inputedYear_,
+                                ConvertJPToAnno.inputedMonth_,
+                                ConvertJPToAnno.inputedDay_
+                            )
+                                .then(t => (ConvertAnnoToJP.result_ = t))
+                                .catch(e => console.log(e));
+                        },
+                    }),
+                ]),
+            ]),
+            m('div', [
+                m('p', '西暦年月日'),
+                m('input[type=text][readonly]', { value: ConvertJPToAnno.result_ }),
+                m('input[type=button]', {
+                    value: 'コピー',
+                    onclick: () => CopyToClipboard(ConvertJPToAnno.result_),
+                }),
+            ]),
+        ]);
+        ConvertJPToAnno.selectedEra_ = Era.eras[0];
+        return ret;
+    },
+};
+
+const Convert = {
+    display: true,
+    view: () => {
+        return m('div', [
+            m('div.tab', [m('a', '日付の変換'), m(m.route.Link, { href: '/api_refrence' }, '変換ＡＰＩ')]),
+            m('div', { display: Convert.display }, [m(ConvertAnnoToJP), m(ConvertJPToAnno)]),
+        ]);
+    },
+};
+
+const ApiReference = {
+    convertedMarkdown: '',
+    oninit: () => {
+        return fetch('./api_reference.md')
+            .then(res => res.text())
             .then(r => {
-                document.getElementById('result_anno_text').value = r.year + '年' + r.month + '月' + r.day + '日';
-                document.getElementById('result_anno').style.display = 'block';
+                ApiReference.convertedMarkdown = marked.parse(r);
+                console.log('ApiReferece: markdown parsed');
+                m.redraw();
             })
-            .catch(e => console.log(e));
-    });
+            .catch(er => console.log(er));
+    },
+    view: () => {
+        console.log('ApiReferece#view');
+        return m('div.tabcontent', m.trust(ApiReference.convertedMarkdown));
+    },
 };
 
-const SetupCopyButton = () => {
-    $(document).ready(() => {
-        toastr.options.timeOut = 3000; // 3秒
-        toastr.options = {
-            closeButton: true,
-            debug: false,
-            newestOnTop: false,
-            progressBar: false,
-            positionClass: 'toast-bottom-right',
-            preventDuplicates: false,
-            showDuration: '300',
-            hideDuration: '1000',
-            timeOut: '5000',
-            extendedTimeOut: '1000',
-            showEasing: 'swing',
-            hideEasing: 'linear',
-            showMethod: 'fadeIn',
-            hideMethod: 'fadeOut',
-        };
-        document.getElementById('copy_to_clipboard1').addEventListener('click', () => {
-            CopyToClipboard(document.getElementById('result_jp_text').value);
-            toastr['success']('クリップボードにコピーしました', '成功');
-        });
-        document.getElementById('copy_to_clipboard2').addEventListener('click', () => {
-            CopyToClipboard(document.getElementById('result_anno_text').value);
-            toastr['success']('クリップボードにコピーしました', '成功');
-        });
-    });
+const Menu = {
+    current: location.href.substring(location.href.indexOf('!') + 1),
+    menubutton: (route, text) => {
+        return route === Menu.current
+            ? m('button.tablinks', text)
+            : m('button.tablinks', { onclick: () => (Menu.current = location.href = '/#!' + route) }, text);
+    },
+    view: () => {
+        return m('div.tab', [
+            Menu.menubutton('/convert_to_jp', '西暦 -> 和暦'),
+            Menu.menubutton('/convert_to_anno', '和暦 -> 西暦'),
+            Menu.menubutton('/api_refrence', '変換ＡＰＩ'),
+        ]);
+    },
 };
 
-const LoadAPIReference = () => {
-    fetch('./api_reference.md')
-        .then(res => res.text())
-        .then(r => {
-            const markdown = marked.parse(r);
-            document.getElementById('api_reference').innerHTML = markdown;
-        })
-        .catch(er => console.log(er));
-};
+m.mount(document.getElementById('menu'), Menu);
 
-ready(() => {
-    LoadAPIReference();
-    AnnoToJP();
-    JPToAnno();
-    SetupCopyButton();
-    document.getElementById('defaultOpen').click();
+m.route(document.getElementById('content'), '/convert_to_jp', {
+    '/convert_to_jp': ConvertAnnoToJP,
+    '/convert_to_anno': ConvertJPToAnno,
+    '/api_refrence': ApiReference,
 });
