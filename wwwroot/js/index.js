@@ -70,8 +70,8 @@ const ConvertAnnoToJP = {
     view: () => {
         return m('section', [
             m(CreateMenu('/convert_to_jp')),
-            m('h3', '西暦から和暦に変換する'),
-            m('div', [
+            m('div.tabcontent', [
+                m('h3', '西暦から和暦に変換する'),
                 m('p', '西暦年月日'),
                 m('input[type=date]', {
                     oninput: e => {
@@ -116,8 +116,8 @@ const ConvertJPToAnno = {
     view: () => {
         const ret = m('section', [
             m(CreateMenu('/convert_to_anno')),
-            m('h3', '和暦から西暦に変換する'),
-            m('div', [
+            m('div.tabcontent', [
+                m('h3', '和暦から西暦に変換する'),
                 m('p', '和暦年月日'),
                 m('p', [
                     m(
@@ -186,7 +186,10 @@ const ApiReference = {
     },
     view: () => {
         console.log('ApiReferece#view');
-        return m('div.tabcontent', [m(CreateMenu('/api_reference')), m.trust(ApiReference.convertedMarkdown)]);
+        return m('section', [
+            m(CreateMenu('/api_reference')),
+            m('div.tabcontent', m.trust(ApiReference.convertedMarkdown))
+        ]);
     },
 };
 
