@@ -1,93 +1,69 @@
 <!DOCTYPE html>
 
-<html lang="ja" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title>西暦・和暦変換サービス</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" href="./css/tab.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="./js/index.js"></script>
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <h1>西暦・和暦変換サービス</h1>
-            </div>
-        </nav>
-    </header>
-    <main>
-        <div class="container">
-            <div class="tab">
-                <button class="tablinks" onclick="openTab(event, 'api_reference')" id="defaultOpen">変換ＡＰＩ</button>
-                <button class="tablinks" onclick="openTab(event, 'anno_to_jp')">西暦 -> 和暦</button>
-                <button class="tablinks" onclick="openTab(event, 'jp_to_anno')">和暦 -> 西暦</button>
-            </div>
-            <div id="api_reference" class="tabcontent"></div>
-            <div id="anno_to_jp" class="tabcontent">
-                <section>
-                    <p>西暦年月日</p>
-                    <p>
-                        <select id="anno_year"></select>年
-                        <select id="anno_month"></select>月
-                        <select id="anno_day"></select>日
-                        <input type="button" id="calc_jp" value="変換">
-                    </p>
-                </section>
-                <section id="result_jp" style="display: none;">
-                    <p>和暦年月日</p>
-                    <p>
-                        <input type="text" id="result_jp_calendar1" size="2px"> <input type="tel" id="result_jp_year1" size="2px">年
-                        <input type="tel" id="result_jp_month1" size="2px">月
-                        <input type="tel" id="result_jp_day1" size="2px">日
-                        <input type="button" id="copy_to_clipboard1" value="コピー">
-                    </p>
-                    <p>
-                        <input type="text" id="result_jp_calendar2" size="2px"> <input type="tel" id="result_jp_year2" size="2px"> .
-                        <input type="tel" id="result_jp_month2" size="2px"> .
-                        <input type="tel" id="result_jp_day2" size="2px">
-                        <input type="button" id="copy_to_clipboard2" value="コピー">
-                    </p>
-                </section>
-            </div>
-            <div id="jp_to_anno" class="tabcontent">
-                <section>
-                    <p>和暦年月日</p>
-                    <p>
-                        <select id="jp_era"></select>
-                        <select id="jp_year"></select>年
-                        <select id="jp_month"></select>月
-                        <select id="jp_day"></select>日
-                        <input type="button" id="calc_anno" value="変換">
-                    </p>
-                </section>
-                <section id="result_anno" style="display: none;">
-                    <p>
-                        <input type="tel" id="result_anno_year1" size="2px">年
-                        <input type="tel" id="result_anno_month1" size="2px">月
-                        <input type="tel" id="result_anno_day1" size="2px">日
-                        <input type="button" id="copy_to_clipboard3" value="コピー">
-                    </p>
-                    <p>
-                        <input type="tel" id="result_anno_year2" size="2px"> .
-                        <input type="tel" id="result_anno_month2" size="2px"> .
-                        <input type="tel" id="result_anno_day2" size="2px">
-                        <input type="button" id="copy_to_clipboard4" value="コピー">
-                    </p>
-                </section>
-            </div>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>西暦・和暦変換サービス</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css"
+            integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" href="./css/style.css" />
+        <link rel="stylesheet" href="./css/tab.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+            integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js"
+            integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+            integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/mithril/2.0.4/mithril.min.js"
+            integrity="sha512-MLAMNLcsKOnrROdkDj6Xe/lG7lztm0VYsq9Lqg76BAV7OJYqEYT23+s58GZrF5M/FXHDZ43uacvdJoAy8CfcUA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script defer src="./js/index.js"></script>
+    </head>
+    <body>
+        <header>
+            <nav
+                class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+            >
+                <div class="container">
+                    <h1>西暦・和暦変換サービス</h1>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <div id="content" class="container"></div>
         </main>
         <footer class="border-top footer text-muted">
             <div class="container">
                 <p>Copyright &copy; 2022 Meigetsu/Meigetsu Net. All rights reserved</p>
             </div>
         </footer>
-    </div>
-</body>
+    </body>
 </html>

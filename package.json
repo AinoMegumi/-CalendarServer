@@ -1,16 +1,36 @@
 {
-  "name": "japanesecalendar",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "ava -v",
-    "start": "node server.js"
-  },
-  "author": "Meigetsu Net",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "express": "^4.17.3",
-    "fs.promises": "^0.1.2"
-  }
+    "name": "japanesecalendar",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server/index.js",
+    "type": "module",
+    "engines": {
+        "node": ">=14.19.0"
+    },
+    "scripts": {
+        "prettier": "prettier --write .",
+        "eslint": "eslint --cache --ext .js .",
+        "eslint:fix": "eslint --cache --ext .js . --fix",
+        "ci": "run-p eslint test",
+        "test": "ava --verbose test/",
+        "start": "node server/index.js"
+    },
+    "author": "Meigetsu Net",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "dayjs": "^1.11.0",
+        "express": "^4.17.3"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.23",
+        "ava": "^4.1.0",
+        "eslint": "^8.12.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-ava": "^13.2.0",
+        "eslint-plugin-jquery": "^1.5.1",
+        "eslint-plugin-node": "^11.1.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.6.1",
+        "supertest": "^6.2.2"
+    }
 }
