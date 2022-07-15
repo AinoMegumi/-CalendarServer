@@ -40,6 +40,7 @@ test('GetJapaneseCalendar', t => {
         calendar: { year: 2, month: 4, day: 3 },
     });
     t.is(GetJapaneseCalendar('2019/04/30').era.alphabet, 'H');
+    t.is(GetJapaneseCalendar('645/6/12'), null);
     t.is(GetJapaneseCalendar(new Date(2019, 4, 30)), null); // Date型の扱いがちょっと厄介なので非サポート
 });
 
