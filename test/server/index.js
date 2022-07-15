@@ -77,5 +77,3 @@ test('Invalid era on anno domini converter', async t => {
     const res = await request(server()).get('/api/anno_domini').query({ date: '大化6.04.10' }).send();
     t.is(res.status, 404);
 });
-
-
