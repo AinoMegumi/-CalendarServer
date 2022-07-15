@@ -1,5 +1,6 @@
 import test from 'ava';
 import { GetBorderInfoFromEra, GetJapaneseCalendar, GetEra } from '../../spec/AnnoToJP.js';
+import { createSandbox, useFakeTimers } from 'sinon';
 
 test('GetBorderInfoFromEra', t => {
     t.is(GetBorderInfoFromEra('元禄'), null);
@@ -8,6 +9,21 @@ test('GetBorderInfoFromEra', t => {
         begin: { year: 1989, month: 1, day: 8 },
         end: { year: 2019, month: 4, day: 30 },
     });
+});
+
+test('GetJapaneseCalendar_NullParameter', t => {
+    const useTime = new Date(2022, 6, 16);
+    const Sandbox = createSandbox();
+    const clock = useFakeTimers(useTime.getTime());
+    try {
+        t.deepEqual(GetJapaneseCalendar(null), {
+            era: { long: '令和', short: '令', alphabet: 'R' },
+            calendar: { year: 4, month: 7, day: 16 },
+        });
+    } finally {
+        Sandbox.restore();
+        clock.restore();
+    }
 });
 
 test('GetJapaneseCalendar', t => {
