@@ -20,7 +20,7 @@ const CopyToClipboard = data => {
     toastr['success']('クリップボードにコピーしました', '成功');
 };
 
-const CreateMenu = (ActiveRoute) => {
+const CreateMenu = ActiveRoute => {
     const Menu = {
         menubutton: (route, text) => {
             return route === ActiveRoute
@@ -36,7 +36,7 @@ const CreateMenu = (ActiveRoute) => {
         },
     };
     return Menu;
-}
+};
 
 const Era = {
     eras: [],
@@ -93,7 +93,10 @@ const ConvertAnnoToJP = {
                 m('div', { id: 'result_jp', style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
                     m('p', '和暦年月日'),
                     m('input[type=text][readonly]', ConvertAnnoToJP.result_),
-                    m('input[type=button]', { value: 'コピー', onclick: () => CopyToClipboard(ConvertAnnoToJP.result_) }),
+                    m('input[type=button]', {
+                        value: 'コピー',
+                        onclick: () => CopyToClipboard(ConvertAnnoToJP.result_),
+                    }),
                 ]),
             ]),
         ]);
@@ -160,14 +163,14 @@ const ConvertJPToAnno = {
                         },
                     }),
                 ]),
-                m('div', { style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' }}, [
+                m('div', { style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
                     m('p', '西暦年月日'),
                     m('input[type=text]', { value: ConvertJPToAnno.result_ }),
                     m('input[type=button]', {
                         value: 'コピー',
                         onclick: () => CopyToClipboard(ConvertJPToAnno.result_),
                     }),
-                ])
+                ]),
             ]),
         ]);
         ConvertJPToAnno.selectedEra_ = Era.eras[0];
@@ -191,7 +194,7 @@ const ApiReference = {
         console.log('ApiReferece#view');
         return m('section', [
             m(CreateMenu('/api_reference')),
-            m('div.tabcontent', m.trust(ApiReference.convertedMarkdown))
+            m('div.tabcontent', m.trust(ApiReference.convertedMarkdown)),
         ]);
     },
 };

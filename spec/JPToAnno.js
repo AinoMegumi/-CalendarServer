@@ -38,22 +38,6 @@ export function dateSplit(dateNum) {
 }
 
 /**
- *
- * @param {{year: string, month: string, day: string}|null} dateMap
- * @returns {{year: number, month: number, day: number}|null}
- */
-export function parseStringMapToNumMap(dateMap) {
-    if (dateMap == null) return null;
-    const ret = {};
-    for (const [key, value] of Object.entries(dateMap)) {
-        if (!value.match(/^\d{1,}$/)) return null;
-        ret[key] = parseInt(value);
-        if (isNaN(ret[key])) return null;
-    }
-    return ret;
-}
-
-/**
  * 和暦日付を西暦日付に変換する
  * @param {string} jpCalendar
  * @returns { year: number, month: number, day: number }
@@ -63,9 +47,15 @@ export function JPToAnno(jpCalendar) {
     if (dateInfo == null || dateInfo.length !== 5) return null;
     const StartYear = GetStartYear(dateInfo.groups.era);
     if (StartYear == null) return null;
+    // 日付の補正をかける
+    const CorrectDate = new Date(
+        parseInt(dateInfo.groups.year) + StartYear - 1,
+        parseInt(dateInfo.groups.month) - 1,
+        parseInt(dateInfo.groups.day)
+    );
     return {
-        year: parseInt(dateInfo.groups.year) + StartYear - 1,
-        month: parseInt(dateInfo.groups.month),
-        day: parseInt(dateInfo.groups.day),
+        year: CorrectDate.getFullYear(),
+        month: CorrectDate.getMonth() + 1,
+        day: CorrectDate.getDate(),
     };
 }
