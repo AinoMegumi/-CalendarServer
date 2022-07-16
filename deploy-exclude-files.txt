@@ -1,0 +1,8 @@
+.git/
+.github/
+test/
+.*.json
+.*ignore
+coverage/
+node_modules/
+deploy-exclude-files.txt
