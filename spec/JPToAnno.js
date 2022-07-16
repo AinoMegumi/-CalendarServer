@@ -47,9 +47,11 @@ export function JPToAnno(jpCalendar) {
     if (dateInfo == null || dateInfo.length !== 5) return null;
     const StartYear = GetStartYear(dateInfo.groups.era);
     if (StartYear == null) return null;
+    // 日付の補正をかける
+    const CorrectDate = new Date(parseInt(dateInfo.groups.year) + StartYear - 1, parseInt(dateInfo.groups.month) - 1, parseInt(dateInfo.groups.day));
     return {
-        year: parseInt(dateInfo.groups.year) + StartYear - 1,
-        month: parseInt(dateInfo.groups.month),
-        day: parseInt(dateInfo.groups.day),
+        year: CorrectDate.getFullYear(),
+        month: CorrectDate.getMonth() + 1,
+        day: CorrectDate.getDate(),
     };
 }
