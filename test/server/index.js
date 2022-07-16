@@ -12,8 +12,12 @@ test('Get Japenese calendar from anno domini calendar', async t => {
 });
 
 test('Invalid date parameter request', async t => {
-    const res = await request(server()).get('/api/japanese').query({ date: '2021/06/31' }).send();
-    t.is(res.status, 400);
+    // このリクエストはDateやDayjsで正常な日付に補正できるので許可
+    const res1 = await request(server()).get('/api/japanese').query({ date: '2021/06/31' }).send();
+    t.is(res1.status, 200);
+    // このリクエストはDateやDayjsで補正できないのでＮＧ
+    const res2 = await request(server()).get('/api/japanese').query({ date: '2021/-6/31' }).send();
+    t.is(res2.status, 400);
 });
 
 test('Get supported eras', async t => {
@@ -69,8 +73,13 @@ test('Invalid date on anno domini converter 1', async t => {
 });
 
 test('Invalid date on anno domini converter 2', async t => {
-    const res = await request(server()).get('/api/anno_domini').query({ date: '令和6.04.31' }).send();
-    t.is(res.status, 404);
+    // このリクエストは各種処理後にDateやDayjsで正常な日付に補正できるので許可
+    const res1 = await request(server()).get('/api/anno_domini').query({ date: '令和6.04.31' }).send();
+    t.is(res1.status, 200);
+    t.deepEqual(res1.body, { year: 2024, month: 5, day: 1 });
+    // // このリクエストは分解ができないのでＮＧ
+    const res2 = await request(server()).get('/api/anno_domini').query({ date: '令和6.04.-1' }).send();
+    t.is(res2.status, 404);
 });
 
 test('Invalid era on anno domini converter', async t => {
