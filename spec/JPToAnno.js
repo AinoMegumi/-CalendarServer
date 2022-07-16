@@ -38,22 +38,6 @@ export function dateSplit(dateNum) {
 }
 
 /**
- *
- * @param {{year: string, month: string, day: string}|null} dateMap
- * @returns {{year: number, month: number, day: number}|null}
- */
-export function parseStringMapToNumMap(dateMap) {
-    if (dateMap == null) return null;
-    const ret = {};
-    for (const [key, value] of Object.entries(dateMap)) {
-        if (!value.match(/^\d{1,}$/)) return null;
-        ret[key] = parseInt(value);
-        if (isNaN(ret[key])) return null;
-    }
-    return ret;
-}
-
-/**
  * 和暦日付を西暦日付に変換する
  * @param {string} jpCalendar
  * @returns { year: number, month: number, day: number }
