@@ -11,6 +11,7 @@
         "prettier": "prettier --write .",
         "eslint": "eslint --cache --ext .js .",
         "eslint:fix": "eslint --cache --ext .js . --fix",
+        "coverage": "c8 npm test",
         "ci": "run-p eslint test",
         "test": "ava --verbose test/",
         "start": "node server/index.js"
