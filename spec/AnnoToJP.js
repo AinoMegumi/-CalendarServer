@@ -21,10 +21,10 @@ export function GetAllEras() {
 /**
  *
  * @param {string|number} dateData
- * @returns {dayjs.Dayjs|null}
+ * @returns {DateCompareManager|null}
  */
 function ToDateCompareManager(dateData) {
-    if (dateData == null) return dayjs();
+    if (dateData == null) return DateCompareManager.FromDayjs(dayjs());
     if (typeof dateData !== 'number' && typeof dateData !== 'string') return null;
     if (typeof dateData === 'number' && !Number.isFinite(dateData)) return null;
     const ret = typeof dateData === 'number' ? dayjs(dateData.toString()) : dayjs(dateData);
