@@ -1,0 +1,279 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "西暦・和暦変換サービス",
+        "description": "西暦年から和暦年、和暦年から西暦年に変換するサービス",
+        "version": "2.0.0",
+        "contact": {
+            "email": "info@mail.meigetsu.jp",
+            "name": "Meigetsu",
+            "url": "https://calendar.net.meigetsu.jp/contact.html"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://calendar.net.meigetsu.jp/api",
+            "description": "Main Server"
+        }
+    ],
+    "tags": [
+        {
+            "name": "AnnoToJP",
+            "description": "西暦から和暦へ変換するAPIとそれらに関する情報を取得するAPI"
+        },
+        {
+            "name": "JPToAnno",
+            "description": "和暦から西暦へ変換するAPIとそれらに関する情報を取得するAPI"
+        }
+    ],
+    "paths": {
+        "/japanese": {
+            "get": {
+                "tags": ["AnnoToJP"],
+                "summary": "西暦から和暦へ変換",
+                "description": "西暦を和暦に変換する。date パラメーターが無い時は今日の日付を使用する",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "description": "変換したい日付",
+                        "schema": {
+                            "type": "string",
+                            "example": "2022.04.01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "和暦に変換された日付を返す",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "era": {
+                                            "description": "元号一覧",
+                                            "type": "object",
+                                            "properties": {
+                                                "long": {
+                                                    "description": "漢字２文字表記",
+                                                    "type": "string",
+                                                    "example": "令和"
+                                                },
+                                                "short": {
+                                                    "description": "漢字１文字表記",
+                                                    "type": "string",
+                                                    "example": "令"
+                                                },
+                                                "alphabet": {
+                                                    "description": "アルファベット１文字表記",
+                                                    "type": "string",
+                                                    "example": "R"
+                                                }
+                                            }
+                                        },
+                                        "calendar": {
+                                            "type": "object",
+                                            "properties": {
+                                                "year": {
+                                                    "description": "和暦年",
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "month": {
+                                                    "description": "月",
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "day": {
+                                                    "description": "月",
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "dateパラメーターの値が日付の要件を満たしていない"
+                    }
+                }
+            }
+        },
+        "/japanese/eras": {
+            "get": {
+                "tags": ["AnnoToJP"],
+                "summary": "対応元号の取得",
+                "description": "サービスが現在対応している元号の一覧を取得する",
+                "responses": {
+                    "200": {
+                        "description": "対応している元号のアルファベット１文字表記と漢字表記のペア一覧を返す",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "eras": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "alphabet": {
+                                                        "description": "元号（漢字表記）",
+                                                        "type": "string",
+                                                        "example": "令和"
+                                                    },
+                                                    "kanji": {
+                                                        "description": "元号（アルファベット１文字表記）",
+                                                        "type": "string",
+                                                        "example": "R"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/japanese/border": {
+            "get": {
+                "tags": ["AnnoToJP"],
+                "summary": "元号の始まりと終わりの日付の取得",
+                "description": "指定された元号の開始年月日と終了年月日を取得する",
+                "parameters": [
+                    {
+                        "name": "era",
+                        "in": "query",
+                        "required": true,
+                        "description": "元号（漢字１文字表記、漢字フル表記、アルファベット１文字表記のいずれか）",
+                        "schema": {
+                            "type": "string",
+                            "example": "平成"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "指定された元号の開始年月日と終了年月日を返す。サポートされている最新の元号の場合、開始年月日のみを返す",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "begin": {
+                                            "description": "元号の開始年月日",
+                                            "type": "object",
+                                            "properties": {
+                                                "year": {
+                                                    "description": "元号の開始年",
+                                                    "type": "integer",
+                                                    "example": 1989
+                                                },
+                                                "month": {
+                                                    "description": "元号の開始月",
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "day": {
+                                                    "description": "元号の開始日",
+                                                    "type": "integer",
+                                                    "example": 8
+                                                }
+                                            }
+                                        },
+                                        "end": {
+                                            "description": "元号の終了年月日。最新元号の時は無し",
+                                            "type": "object",
+                                            "properties": {
+                                                "year": {
+                                                    "description": "元号の終了年",
+                                                    "type": "integer",
+                                                    "example": 2019
+                                                },
+                                                "month": {
+                                                    "description": "元号の終了月",
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "day": {
+                                                    "description": "元号の終了日",
+                                                    "type": "integer",
+                                                    "example": 30
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "eraパラメーターが存在しない"
+                    },
+                    "404": {
+                        "description": "eraパラメーターに指定された元号がシステムサポート対象外"
+                    }
+                }
+            }
+        },
+        "/anno_domini": {
+            "get": {
+                "tags": ["JPToAnno"],
+                "summary": "和暦から西暦へ変換",
+                "description": "和暦を西暦に変換する。",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "description": "変換したい日付。ただし、月と日は２桁表記",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "R2.04.01"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "西暦に変換したカレンダーを返す",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "year": {
+                                            "type": "integer",
+                                            "example": 2020
+                                        },
+                                        "month": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "day": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "dateパラメーターが指定されていない"
+                    },
+                    "404": {
+                        "description": "日付のフォーマットのエラー、または指定元号がサポート対象外"
+                    }
+                }
+            }
+        }
+    }
+}

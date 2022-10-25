@@ -1,6 +1,7 @@
 import express from 'express';
 import { GetJapaneseCalendar, GetBorderInfoFromEra, GetAllEras } from '../spec/AnnoToJP.js';
 import { JPToAnno } from '../spec/JPToAnno.js';
+import { readFileSync } from 'fs';
 const app = express();
 
 export const server = () => {
@@ -23,6 +24,9 @@ export const server = () => {
         const resData = JPToAnno(req.query.date);
         if (resData == null) return res.sendStatus(404);
         res.send(resData);
+    });
+    app.get('/api/spec', (_, res) => {
+        res.send(readFileSync('./openapi.json'));
     });
     app.use(express.static('wwwroot'));
     app.use(express.json({ type: 'application/*+json' }));
