@@ -69,35 +69,32 @@ const ConvertAnnoToJP = {
     },
     view: () => {
         return m('section', [
-            m(CreateMenu('/convert_to_jp')),
-            m('div.tabcontent', [
-                m('h3', '西暦から和暦に変換する'),
-                m('p', '西暦年月日'),
-                m('input[type=date]', {
-                    oninput: e => {
-                        ConvertAnnoToJP.date_ = e.target.value;
-                    },
-                    value: ConvertAnnoToJP.date_,
-                }),
+            m('h3', '西暦から和暦に変換する'),
+            m('p', '西暦年月日'),
+            m('input[type=date]', {
+                oninput: e => {
+                    ConvertAnnoToJP.date_ = e.target.value;
+                },
+                value: ConvertAnnoToJP.date_,
+            }),
+            m('input[type=button]', {
+                id: 'calc_jp',
+                value: '変換',
+                onclick: () => {
+                    ConvertAnnoToJP.convert(ConvertAnnoToJP.date_)
+                        .then(t => {
+                            ConvertAnnoToJP.result_ = t;
+                        })
+                        .catch(e => console.log(e));
+                },
+            }),
+            m('div', { id: 'result_jp', style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
+                m('p', '和暦年月日'),
+                m('input[type=text][readonly]', ConvertAnnoToJP.result_),
                 m('input[type=button]', {
-                    id: 'calc_jp',
-                    value: '変換',
-                    onclick: () => {
-                        ConvertAnnoToJP.convert(ConvertAnnoToJP.date_)
-                            .then(t => {
-                                ConvertAnnoToJP.result_ = t;
-                            })
-                            .catch(e => console.log(e));
-                    },
+                    value: 'コピー',
+                    onclick: () => CopyToClipboard(ConvertAnnoToJP.result_),
                 }),
-                m('div', { id: 'result_jp', style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
-                    m('p', '和暦年月日'),
-                    m('input[type=text][readonly]', ConvertAnnoToJP.result_),
-                    m('input[type=button]', {
-                        value: 'コピー',
-                        onclick: () => CopyToClipboard(ConvertAnnoToJP.result_),
-                    }),
-                ]),
             ]),
         ]);
     },
@@ -118,59 +115,56 @@ const ConvertJPToAnno = {
     },
     view: () => {
         const ret = m('section', [
-            m(CreateMenu('/convert_to_anno')),
-            m('div.tabcontent', [
-                m('h3', '和暦から西暦に変換する'),
-                m('p', '和暦年月日'),
-                m('p', [
-                    m(
-                        'select',
-                        {
-                            oncange: e => (ConvertJPToAnno.selectedEra_ = e.target.value),
-                            value: ConvertJPToAnno.selectedEra_,
-                        },
-                        m(Era)
-                    ),
-                    m("input[type='number'][min='1'][max='64'][pattern='[1-9][0-9]*$']", {
-                        oninput: e => (ConvertJPToAnno.inputedYear_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
-                        value: ConvertJPToAnno.inputedYear_,
-                    }),
-                    '年',
-                    m("input[type='number'][min='1'][max='12'][pattern='[1-9][0-9]*$']", {
-                        oninput: e => (ConvertJPToAnno.inputedMonth_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
-                        value: ConvertJPToAnno.inputedMonth_,
-                    }),
-                    '月',
-                    m("input[type='number'][min='1'][max='31'][pattern='[1-9][0-9]*$']", {
-                        oninput: e => (ConvertJPToAnno.inputedDay_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
-                        value: ConvertJPToAnno.inputedDay_,
-                    }),
-                    '日',
-                    m('input[type=button]', {
-                        value: '変換',
-                        onclick: () => {
-                            ConvertJPToAnno.convert(
-                                ConvertJPToAnno.selectedEra_,
-                                ConvertJPToAnno.inputedYear_,
-                                ConvertJPToAnno.inputedMonth_,
-                                ConvertJPToAnno.inputedDay_
-                            )
-                                .then(t => {
-                                    console.log(t);
-                                    ConvertAnnoToJP.result_ = t;
-                                })
-                                .catch(e => console.log(e));
-                        },
-                    }),
-                ]),
-                m('div', { style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
-                    m('p', '西暦年月日'),
-                    m('input[type=text]', { value: ConvertJPToAnno.result_ }),
-                    m('input[type=button]', {
-                        value: 'コピー',
-                        onclick: () => CopyToClipboard(ConvertJPToAnno.result_),
-                    }),
-                ]),
+            m('h3', '和暦から西暦に変換する'),
+            m('p', '和暦年月日'),
+            m('p', [
+                m(
+                    'select',
+                    {
+                        oncange: e => (ConvertJPToAnno.selectedEra_ = e.target.value),
+                        value: ConvertJPToAnno.selectedEra_,
+                    },
+                    m(Era)
+                ),
+                m("input[type='number'][min='1'][max='64'][pattern='[1-9][0-9]*$']", {
+                    oninput: e => (ConvertJPToAnno.inputedYear_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                    value: ConvertJPToAnno.inputedYear_,
+                }),
+                '年',
+                m("input[type='number'][min='1'][max='12'][pattern='[1-9][0-9]*$']", {
+                    oninput: e => (ConvertJPToAnno.inputedMonth_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                    value: ConvertJPToAnno.inputedMonth_,
+                }),
+                '月',
+                m("input[type='number'][min='1'][max='31'][pattern='[1-9][0-9]*$']", {
+                    oninput: e => (ConvertJPToAnno.inputedDay_ = ConvertJPToAnno.toTwoDigit_(e.target.value)),
+                    value: ConvertJPToAnno.inputedDay_,
+                }),
+                '日',
+                m('input[type=button]', {
+                    value: '変換',
+                    onclick: () => {
+                        ConvertJPToAnno.convert(
+                            ConvertJPToAnno.selectedEra_,
+                            ConvertJPToAnno.inputedYear_,
+                            ConvertJPToAnno.inputedMonth_,
+                            ConvertJPToAnno.inputedDay_
+                        )
+                            .then(t => {
+                                console.log(t);
+                                ConvertAnnoToJP.result_ = t;
+                            })
+                            .catch(e => console.log(e));
+                    },
+                }),
+            ]),
+            m('div', { style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
+                m('p', '西暦年月日'),
+                m('input[type=text]', { value: ConvertJPToAnno.result_ }),
+                m('input[type=button]', {
+                    value: 'コピー',
+                    onclick: () => CopyToClipboard(ConvertJPToAnno.result_),
+                }),
             ]),
         ]);
         ConvertJPToAnno.selectedEra_ = Era.eras[0];
@@ -178,29 +172,5 @@ const ConvertJPToAnno = {
     },
 };
 
-const ApiReference = {
-    convertedMarkdown: '',
-    oninit: () => {
-        return fetch('./api_reference.md')
-            .then(res => res.text())
-            .then(r => {
-                ApiReference.convertedMarkdown = marked.parse(r);
-                console.log('ApiReferece: markdown parsed');
-                m.redraw();
-            })
-            .catch(er => console.log(er));
-    },
-    view: () => {
-        console.log('ApiReferece#view');
-        return m('section', [
-            m(CreateMenu('/api_reference')),
-            m('div.tabcontent', m.trust(ApiReference.convertedMarkdown)),
-        ]);
-    },
-};
-
-m.route(document.getElementById('content'), '/convert_to_jp', {
-    '/convert_to_jp': ConvertAnnoToJP,
-    '/convert_to_anno': ConvertJPToAnno,
-    '/api_reference': ApiReference,
-});
+m.mount(document.getElementById('anno_to_jp'), ConvertAnnoToJP);
+m.mount(document.getElementById('jp_to_anno'), ConvertJPToAnno);
