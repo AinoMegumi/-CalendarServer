@@ -163,7 +163,7 @@ const ConvertJPToAnno = {
                 ]),
                 m('div', { style: { display: ConvertJPToAnno.result_ === '' ? 'none' : 'block' } }, [
                     m('p', '西暦年月日'),
-                    m('input[type=text]', { value: ConvertJPToAnno.result_ }),
+                    m('input[type=text][readonly]', { value: ConvertJPToAnno.result_ }),
                     m('input[type=button]', {
                         value: 'コピー',
                         onclick: () => CopyToClipboard(ConvertJPToAnno.result_),
