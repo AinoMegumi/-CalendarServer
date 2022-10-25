@@ -3,7 +3,6 @@
 [![build](https://github.com/AinoMegumi/CalendarServer/actions/workflows/build.yml/badge.svg)](https://github.com/AinoMegumi/CalendarServer/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/AinoMegumi/CalendarServer/badge.svg?branch=renew_date_parser)](https://coveralls.io/github/AinoMegumi/CalendarServer?branch=renew_date_parser)
 
-
 ＡＰＩリクエストで西暦から和暦、和暦から西暦に変換するサーバー
 
 ## 変換ＡＰＩ一覧
