@@ -156,13 +156,13 @@ const ConvertJPToAnno = {
                             )
                                 .then(t => {
                                     console.log(t);
-                                    ConvertAnnoToJP.result_ = t;
+                                    ConvertJPToAnno.result_ = t;
                                 })
                                 .catch(e => console.log(e));
                         },
                     }),
                 ]),
-                m('div', { style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
+                m('div', { style: { display: ConvertJPToAnno.result_ === '' ? 'none' : 'block' } }, [
                     m('p', '西暦年月日'),
                     m('input[type=text]', { value: ConvertJPToAnno.result_ }),
                     m('input[type=button]', {
