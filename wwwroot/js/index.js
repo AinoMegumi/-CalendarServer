@@ -48,7 +48,6 @@ const Era = {
                 // .then(res => res.json())
                 .then(r => {
                     Era.eras = r.eras.map(e => e.kanji).reverse();
-                    console.log('requested', Era.eras);
                     m.redraw();
                 })
                 .catch(e => console.log(e))
