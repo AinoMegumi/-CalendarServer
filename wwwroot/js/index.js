@@ -90,7 +90,7 @@ const ConvertAnnoToJP = {
                 }),
                 m('div', { id: 'result_jp', style: { display: ConvertAnnoToJP.result_ === '' ? 'none' : 'block' } }, [
                     m('p', '和暦年月日'),
-                    m('input[type=text][readonly]', ConvertAnnoToJP.result_),
+                    m('input[type=text][readonly]', { value: ConvertAnnoToJP.result_ }),
                     m('input[type=button]', {
                         value: 'コピー',
                         onclick: () => CopyToClipboard(ConvertAnnoToJP.result_),
