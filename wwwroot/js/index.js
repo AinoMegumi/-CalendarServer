@@ -31,7 +31,6 @@ const CreateMenu = ActiveRoute => {
             return m('div.tab', [
                 Menu.menubutton('/convert_to_jp', '西暦 -> 和暦'),
                 Menu.menubutton('/convert_to_anno', '和暦 -> 西暦'),
-                Menu.menubutton('/api_reference', '変換ＡＰＩ'),
             ]);
         },
     };
@@ -178,29 +177,7 @@ const ConvertJPToAnno = {
     },
 };
 
-const ApiReference = {
-    convertedMarkdown: '',
-    oninit: () => {
-        return fetch('./api_reference.md')
-            .then(res => res.text())
-            .then(r => {
-                ApiReference.convertedMarkdown = marked.parse(r);
-                console.log('ApiReferece: markdown parsed');
-                m.redraw();
-            })
-            .catch(er => console.log(er));
-    },
-    view: () => {
-        console.log('ApiReferece#view');
-        return m('section', [
-            m(CreateMenu('/api_reference')),
-            m('div.tabcontent', m.trust(ApiReference.convertedMarkdown)),
-        ]);
-    },
-};
-
 m.route(document.getElementById('content'), '/convert_to_jp', {
     '/convert_to_jp': ConvertAnnoToJP,
     '/convert_to_anno': ConvertJPToAnno,
-    '/api_reference': ApiReference,
 });
