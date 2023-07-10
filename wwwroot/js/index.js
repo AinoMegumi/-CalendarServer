@@ -124,7 +124,7 @@ const ConvertJPToAnno = {
                     m(
                         'select',
                         {
-                            oncange: e => (ConvertJPToAnno.selectedEra_ = e.target.value),
+                            onchange: e => (ConvertJPToAnno.selectedEra_ = e.target.value),
                             value: ConvertJPToAnno.selectedEra_,
                         },
                         m(Era)
